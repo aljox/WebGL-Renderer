@@ -1,3 +1,4 @@
+//TODO: Rotation with vectors
 class Matrix44f {
   constructor(matrix){
     matrix = this.checkLength(matrix);
