@@ -88,4 +88,6 @@ class LoaderManager {
 
   getShaderList(){return this.shaderList;}
   getModelList(){return this.modelList;}
+  getLoadShaderObj(){return this.loadShaderObj;}
+  getLoadModelObj(){return this.loadModelObj;}
 }
