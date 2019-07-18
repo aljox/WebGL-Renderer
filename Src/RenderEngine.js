@@ -48,4 +48,8 @@ class RenderEngine {
       renderEngine.programs.push(new Program(renderEngine.gl, renderEngine.shaders[i * 2], renderEngine.shaders[i * 2 + 1]));
     }
   }
+
+  getGl(){return this.gl;}
+  getPrograms(){return this.programs}
+  getModels(){return this.models;}
 }
