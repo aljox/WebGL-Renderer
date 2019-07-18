@@ -1,5 +1,6 @@
 class LoaderManager {
-  constructor(shaderList, modelList){
+  constructor(renderEngine, shaderList, modelList){
+    this.renderEngine = renderEngine;
     this.shaderList = shaderList;
     this.modelList = modelList;
     this.loadShaderObj = [];
@@ -75,7 +76,7 @@ class LoaderManager {
   waitLoad(callback){
     if(this.checkLoad()){
       console.log("Files loaded!");
-      callback(this.loadShaderObj, this.loadModelObj);
+      callback(this.renderEngine, this.loadShaderObj, this.loadModelObj);
     } else {
       setTimeout(function() {
           this.waitLoad(callback);
