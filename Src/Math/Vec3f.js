@@ -7,7 +7,7 @@ class Vec3f{
   }
 
   addVec(vector){
-    return new Vec3f(this.x + vector.getX(), this.y + vector.getX(), this.z + vector.getZ());
+    return new Vec3f(this.x + vector.getX(), this.y + vector.getY(), this.z + vector.getZ());
   }
 
   addScalar(scalar){
@@ -15,7 +15,7 @@ class Vec3f{
   }
 
   subVec(vector){
-    return new Vec3f(this.x - vector.getX(), this.y - vector.getX(), this.z - vector.getZ());
+    return new Vec3f(this.x - vector.getX(), this.y - vector.getY(), this.z - vector.getZ());
   }
 
   subScalar(scalar){
@@ -23,7 +23,7 @@ class Vec3f{
   }
 
   mulVec(vector){
-    return new Vec3f(this.x * vector.getX(), this.y * vector.getX(), this.z * vector.getZ());
+    return new Vec3f(this.x * vector.getX(), this.y * vector.getY(), this.z * vector.getZ());
   }
 
   mulScalar(scalar){
@@ -31,7 +31,7 @@ class Vec3f{
   }
 
   divVec(vector){
-    return new Vec3f(this.x / vector.getX(), this.y / vector.getX(), this.z / vector.getZ());
+    return new Vec3f(this.x / vector.getX(), this.y / vector.getY(), this.z / vector.getZ());
   }
 
   divScalar(scalar){

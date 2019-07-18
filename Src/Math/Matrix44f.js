@@ -271,7 +271,6 @@ class Matrix44f {
     return mul;
   }
 
-
   print(){
     console.log(this.matrix);
   }
