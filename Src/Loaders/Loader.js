@@ -10,7 +10,7 @@ class Loader {
     fetch(this.url)
     .then(response => response.text())
     .then((data) => {
-      this.loadFlag = true;
+      this.loaded = true;
       this.data = data;
     });
   }

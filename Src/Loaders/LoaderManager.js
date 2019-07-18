@@ -19,10 +19,10 @@ class LoaderManager {
 
       switch(type){
         case "VERTEX_SHADER":
-          this.loadShaderObj.push(new VertexShaderLoader("/res/Shaders/" + url));
+          this.loadShaderObj.push(new VertexShaderLoader("/Lib/Shaders/" + url));
           break;
         case "FRAGMENT_SHADER":
-          this.loadShaderObj.push(new FragmentShaderLoader("/res/Shaders/" + url));
+          this.loadShaderObj.push(new FragmentShaderLoader("/Lib/Shaders/" + url));
           break;
         default:
           throw Error("Unknown shader file type.");
@@ -39,7 +39,7 @@ class LoaderManager {
     for (let url of this.modelList){
       let type = this.setType(url);
       if(type === "OBJ_MODEL"){
-        this.loadModelObj.push(new ModelLoader("/res/Shaders/" + url));
+        this.loadModelObj.push(new ModelLoader("/Lib/Models/" + url));
       } else {
         throw Error("Unknown model file type.");
       }
@@ -61,10 +61,10 @@ class LoaderManager {
 
   //Check if all files from loadObject have been loaded
   checkLoad(){
-    let loadObjects = loadShaderObj.concat(loadModelObj);
+    let loadObjects = this.loadShaderObj.concat(this.loadModelObj);
 
     for(let loadObj of loadObjects){
-      if(loadObj.getLoadFlag() === false){
+      if(loadObj.getLoaded() === false){
         return false;
       }
     }
