@@ -39,7 +39,9 @@ class RenderEngine {
   }
 
   static setModels(renderEngine, loadModelList){
-    //TODO
+    for(let loadObj of loadModelList){
+      renderEngine.models.push(new Model(loadObj.getData()));
+    }
   }
 
   static setPrograms(renderEngine, loadShaderList){
