@@ -1,6 +1,5 @@
 class Shader {
-  constructor(gl, loadObject){
-    this.gl = gl;
+  constructor(loadObject){
     this.type = loadObject.getType();
     this.source = loadObject.getData();
     this.attributeLocationNames = [];
@@ -47,14 +46,14 @@ class Shader {
   }
 
   createAndCompileShader(){
-    let shader = this.gl.createShader(this.gl[this.type]);
-    this.gl.shaderSource(shader, this.source);
-    this.gl.compileShader(shader);
+    let shader = gl.createShader(gl[this.type]);
+    gl.shaderSource(shader, this.source);
+    gl.compileShader(shader);
 
     // Check if compiled
-    let success = this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS);
+    let success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
     if (!success) {
-      throw "Could not compile " + this.type + " : " + this.gl.getShaderInfoLog(shader);
+      throw "Could not compile " + this.type + " : " + gl.getShaderInfoLog(shader);
     }
 
     return shader;
@@ -65,5 +64,4 @@ class Shader {
   getAttributeLocationNames(){return this.attributeLocationNames;}
   getUniformLocationNames(){return this.uniformLocationNames;}
   getShader(){return this.shader;}
-
 }

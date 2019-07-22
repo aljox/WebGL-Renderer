@@ -1,3 +1,6 @@
+//global definiton of gl context
+let gl;
+
 class RenderEngine {
   constructor(shaderList, modelList){
     this.shaderList = shaderList;
@@ -18,8 +21,8 @@ class RenderEngine {
   }
 
   createWebGlContext(){
-    this.gl = this.canvas.getContext("webgl")
-    if(!this.gl){
+    gl = this.canvas.getContext("webgl")
+    if(!gl){
       throw Error("Browser might not support WebGl");
     }
   }
@@ -41,11 +44,11 @@ class RenderEngine {
 
   static setPrograms(renderEngine, loadShaderList){
     for(let loadObj of loadShaderList){
-      renderEngine.shaders.push(new Shader(renderEngine.gl, loadObj));
+      renderEngine.shaders.push(new Shader(loadObj));
     }
 
     for(let i = 0; i < renderEngine.shaders.length / 2; i++){
-      renderEngine.programs.push(new Program(renderEngine.gl, renderEngine.shaders[i * 2], renderEngine.shaders[i * 2 + 1]));
+      renderEngine.programs.push(new Program(renderEngine.shaders[i * 2], renderEngine.shaders[i * 2 + 1]));
     }
   }
 
