@@ -11,9 +11,6 @@ class Model{
     this.indexBufferSpec = null;
 
     this.buildFromObj();
-
-    console.log(this.indexBuffer);
-    console.log(this.indexBufferSpec);
   }
 
   //TODO: solution for beter match declaration
@@ -100,4 +97,10 @@ class Model{
         throw Error("Unsupported type in obj file");
     }
   }
+
+  getVertices(){return this.vertices;}
+  getTextureCord(){return this.textureCord;}
+  getNormals(){return this.normals;}
+  getIndexBuffer(){return this.indexBuffer;}
+  getIndexBufferSpec(){return this.indexBufferSpec;}
 }
