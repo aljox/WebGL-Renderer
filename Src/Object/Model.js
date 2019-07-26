@@ -1,3 +1,5 @@
+const NUM_OF_COMPONENTS_PER_VERT = 3;
+
 //class for loading from obj file format
 class Model{
   constructor(data){
@@ -6,8 +8,12 @@ class Model{
     this.textureCord = [];
     this.normals = [];
     this.indexBuffer = [];
+    this.indexBufferSpec = null;
 
     this.buildFromObj();
+
+    console.log(this.indexBuffer);
+    console.log(this.indexBufferSpec);
   }
 
   //TODO: solution for beter match declaration
@@ -24,20 +30,50 @@ class Model{
     //let faceVertNorMatch = data.match(/^f( -?\d+?\/\/\d+?){4}$/gm);
 
     let polygonMatch = this.data.match(/^p( -?\d+?){3}$/gm);
-    //let polygonVertTextNorMatch = data.match(/^p( -?\d+?\/\d+?\/\d+?){3}$/gm);
-    //let polygonVertTextMatch = data.match(/^p( -?\d+?\/\d+?){3}$/gm);
-    //let polygonVertNorMatch = data.match(/^p( -?\d+?\/\/\d+?){3}$/gm);
+    let polygonVertTextNorMatch = this.data.match(/^p( -?\d+?\/\d+?\/\d+?){3}$/gm);
+    let polygonVertTextMatch = this.data.match(/^p( -?\d+?\/\d+?){3}$/gm);
+    let polygonVertNorMatch = this.data.match(/^p( -?\d+?\/\/\d+?){3}$/gm);
 
     let matches = [vertexMatch, textureMatch, normalMatch,
                   /*faceVertMatch, faceVertTextNorMatch, faceVertTextMatch, faceVertNorMatch,*/
-                  polygonMatch, /*polygonVertTextNorMatch, polygonVertTextMatch, polygonVertNorMatch,*/
                 ];
+    let indexMatch = [
+        polygonMatch, polygonVertTextNorMatch, polygonVertTextMatch, polygonVertNorMatch,
+    ];
 
+    //Fill vertex, normal and textureCord arrays
     for(let match of matches){
       if(match){
         for(let i = 0; i < match.length; i++){
           this.mapToArray(match[i]);
         }
+      }
+    }
+
+    //Fill index buffer, only one can be specified
+    for(let i = 0; i < indexMatch.length; i++){
+      if(indexMatch[i]){
+        for(let match of indexMatch[i]){
+          this.mapToArray(match);
+        }
+
+        switch (i) {
+          case 0:
+            this.indexBufferSpec = "POLYGON_MATCH";
+            break;
+            case 1:
+              this.indexBufferSpec = "POLYGON_VERT_TEXT_NOR_MATCH";
+              break;
+              case 2:
+                this.indexBufferSpec = "POLYGON_VERT_TEXT_MATCH";
+                break;
+                case 3:
+                  this.indexBufferSpec = "POLYGON_VERT_NOR_MATCH";
+                  break;
+          default:
+              throw Error("Unsupported index buffer specification in obj file");
+        }
+        break;
       }
     }
   }
