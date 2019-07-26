@@ -290,6 +290,16 @@ class Matrix44f {
     return multVector;
   }
 
+  //arr[0] * arr[1]...
+  static mulArray(arr){
+    let multMatrix = Matrix44f.initIdentity();
+    for(let i = arr.length - 1; i >= 0; i--){
+      multMatrix.mul(arr[i]);
+    }
+
+    return multMatrix;
+  }
+
   print(){
     console.log(this.matrix);
   }
