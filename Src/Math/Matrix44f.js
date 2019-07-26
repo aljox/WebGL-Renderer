@@ -271,6 +271,25 @@ class Matrix44f {
     return mul;
   }
 
+  //matrix * vec
+  //Matrix is treated as 3x3 matrix!
+  static mulVector(matrix, vec) {
+    let multVector = new Vec3f(0, 0, 0);
+    multVector.setX(matrix.getElement(0, 0) * vec.getX() +
+                    matrix.getElement(1, 0) * vec.getY() +
+                    matrix.getElement(2, 0) * vec.getZ());
+
+    multVector.setY(matrix.getElement(0, 1) * vec.getX() +
+                    matrix.getElement(1, 1) * vec.getY() +
+                    matrix.getElement(2, 1) * vec.getZ());
+
+    multVector.setZ(matrix.getElement(0, 2) * vec.getX() +
+                    matrix.getElement(1, 2) * vec.getY() +
+                    matrix.getElement(2, 2) * vec.getZ());
+
+    return multVector;
+  }
+
   print(){
     console.log(this.matrix);
   }
