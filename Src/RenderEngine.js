@@ -8,6 +8,8 @@ class RenderEngine {
     this.shaders = [];
     this.programs = [];
     this.models = [];
+    this.renderModelsSetted = false;
+    this.renderModels = [];
   }
 
   initialise(){
@@ -40,8 +42,14 @@ class RenderEngine {
 
   static setModels(renderEngine, loadModelList){
     for(let loadObj of loadModelList){
-      renderEngine.models.push(new Model(loadObj.getData()));
+      renderEngine.addModel(new Model(loadObj.getData()));
     }
+
+    for(let model of renderEngine.getModels()){
+      renderEngine.addRenderModel(RenderModel.buildFromModel(model));
+    }
+
+    renderEngine.renderModelsSetted = true;
   }
 
   static setPrograms(renderEngine, loadShaderList){
@@ -54,7 +62,23 @@ class RenderEngine {
     }
   }
 
+  waitSetRenderModels(callback){
+    if(this.renderModelsSetted){
+      console.log("Render Models Setted!");
+      callback(this);
+    } else {
+      setTimeout(function() {
+          this.waitSetRenderModels(callback);
+        }.bind(this), 50);
+    }
+  }
+
+  addModel(model){this.models.push(model);}
+  addRenderModel(renderModel){this.renderModels.push(renderModel)};
+
   getGl(){return this.gl;}
   getPrograms(){return this.programs}
   getModels(){return this.models;}
+  getRenderModelsSetted(){return this.renderModelsSetted;}
+  getRenderModels(){return this.renderModels;}
 }

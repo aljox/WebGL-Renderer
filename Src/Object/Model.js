@@ -103,4 +103,7 @@ class Model{
   getNormals(){return this.normals;}
   getIndexBuffer(){return this.indexBuffer;}
   getIndexBufferSpec(){return this.indexBufferSpec;}
+
+  //Necessery in this order!
+  getModelData(){return [this.vertices, this.textureCord, this.normals]};
 }
