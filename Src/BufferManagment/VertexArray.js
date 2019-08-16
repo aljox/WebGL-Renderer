@@ -8,7 +8,7 @@ class VertexArray{
   }
 
   combineBuffers(){
-    if(!this.canCombine()) throw ("Cannot combine - buffer sizes not compatible.");
+    if(!this.canCombine()) throw ("Cannot combine - buffer sizes or buffer data not compatible.");
 
     let buffer = [];
 

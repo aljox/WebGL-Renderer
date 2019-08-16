@@ -5,7 +5,7 @@ class Object {
     //local position, rotation, scale
     this.position = new Vec3f(0.0, 0.0, 0.0);
     this.rotation = new Vec3f(0, 0, 0);
-    this.scale = new Vec3f(0, 0, 0);
+    this.scale = new Vec3f(1, 1, 1);
 
     //matrix - stores outside transformations
     this.matrix = Matrix44f.initIdentity();
@@ -109,7 +109,8 @@ class Object {
   }
 
   applyTransformation(trans){
-    this.matrix = Matrix44f.multiply(trans, this.matrix);
+    this.matrix = Matrix44f.mul(trans, this.matrix);
+    this.modelMatrixUpdate = true;
   }
 
   updateModelMatrix(){
@@ -122,6 +123,7 @@ class Object {
     let scale = Matrix44f.initScale(this.scale.getX(), this.scale.getY(), this.scale.getZ());
 
     this.modelMatrix = Matrix44f.mulArray([this.matrix, position, rotation, scale]);
+    this.modelMatrixUpdate === false;
   }
 
   getVisible(){return this.visible;}

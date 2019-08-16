@@ -2,6 +2,6 @@ class MathExt{
   constructor(){}
 
   static degreeToRadians(degree){
-    return angleInDegrees * Math.PI / 180;
+    return degree * Math.PI / 180;
   }
 }

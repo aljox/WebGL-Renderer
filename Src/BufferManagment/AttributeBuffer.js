@@ -24,6 +24,7 @@ class AttributeBuffer{
   getData(){return this.data;}
   getType(){return this.type;}
   getUsage(){return this.usage;}
+  getBuffer(){return this.buffer;}
 }
 
 class IndexBuffer extends AttributeBuffer{

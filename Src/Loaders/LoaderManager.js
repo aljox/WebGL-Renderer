@@ -20,10 +20,10 @@ class LoaderManager {
 
       switch(type){
         case "VERTEX_SHADER":
-          this.loadShaderObj.push(new VertexShaderLoader("/Lib/Shaders/" + url));
+          this.loadShaderObj.push(new VertexShaderLoader("/Lib/Shaders/ErrorTest/" + url));
           break;
         case "FRAGMENT_SHADER":
-          this.loadShaderObj.push(new FragmentShaderLoader("/Lib/Shaders/" + url));
+          this.loadShaderObj.push(new FragmentShaderLoader("/Lib/Shaders/ErrorTest/" + url));
           break;
         default:
           throw Error("Unknown shader file type.");

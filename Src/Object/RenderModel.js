@@ -17,7 +17,12 @@ class RenderModel extends Object {
       RenderModel.buildNewBufferToIndex(modelData);
     }
 
-    indexBuffer = modelIndexData;
+    if(indexBuffer !== null){
+      for(let i = 0; i < modelIndexData.length; i++){
+        modelIndexData[i]--;
+      }
+      indexBuffer = new IndexBuffer(modelIndexData, "STATIC_DRAW");
+    }
 
     //Set array of vertexBuffer
     let buffers = [];
@@ -51,4 +56,10 @@ class RenderModel extends Object {
   static buildNewBufferToIndex(modelData){
     console.log("Not finished.");
   }
+
+  addToVertexArray(buffer){
+    this.vertexArray.addVertexbuffer(buffer);
+  }
+
+  getVertexArray(){return this.vertexArray;}
 }

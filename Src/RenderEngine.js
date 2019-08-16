@@ -15,7 +15,7 @@ class RenderEngine {
   initialise(){
     this.createCanvas();
     this.createWebGlContext();
-    this.initalisePrograms();
+    this.initaliseData();
   }
 
   createCanvas(){
@@ -29,7 +29,7 @@ class RenderEngine {
     }
   }
 
-  initalisePrograms(){
+  initaliseData(){
     let loadMan = new LoaderManager(this, this.shaderList, this.modelList);
     loadMan.executeLoad();
     loadMan.waitLoad(this.setLoadData);

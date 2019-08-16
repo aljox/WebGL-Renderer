@@ -41,11 +41,11 @@ class Matrix44f {
   }
 
   static initRotation(x, y, z){
-    let rotX = Matrix44f.rotationX(x);
-    let rotY = Matrix44f.rotationY(y);
-    let rotZ = Matrix44f.rotationZ(z);
+    let rotX = Matrix44f.initRotationX(x);
+    let rotY = Matrix44f.initRotationY(y);
+    let rotZ = Matrix44f.initRotationZ(z);
 
-    return Matrix44f.Mul(rotZ, Matrix44f.Mul(rotY, rotX));
+    return Matrix44f.mulArray([rotZ, rotY, rotX]);
   }
 
   static initRotationX(angleRadians){
@@ -108,10 +108,10 @@ class Matrix44f {
 
   static initOrtographich(left, right, bottom, top, near, far){
     let dX = right - left;
-    let dY = top -bottom;
+    let dY = top - bottom;
     let dZ = far - near;
 
-    return new this([2 / dx, 0, 0, 0,
+    return new this([2 / dX, 0, 0, 0,
                      0, 2 / dY, 0, 0,
                      0, 0, -2 / dZ, 0,
                      -(right + left) / dX, -(top + bottom) / dY, -(far + near) / dZ, 1]);
@@ -129,7 +129,7 @@ class Matrix44f {
 
     return new this([(2 * zNear) / dX, 0, 0, 0,
                       0, (2 * zNear) / dY, 0, 0,
-                      (right + left) / dX, (top + bottom) / dY, -(far + near) / dZ, -1,
+                      (right + left) / dX, (top + bottom) / dY, -(zFar + zNear) / dZ, -1,
                       0, 0, -(2 * zFar * zNear) / dZ, 0]);
   }
 
