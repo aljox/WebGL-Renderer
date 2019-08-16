@@ -118,19 +118,29 @@ class Matrix44f {
   }
 
   static initPerspective(fov, aspectRatio, zNear, zFar){
-    let top = Math.tan((fov * Math.PI) / 2) * zNear;
-    let bottom = -top;
-    let right = top * aspectRatio;
-    let left = -right;
+    // Scratch a pixel perspective matrix
+    // let top = Math.tan((fov * Math.PI) / 2) * zNear;
+    // let bottom = -top;
+    // let right = top * aspectRatio;
+    // let left = -right;
+    //
+    // let dX = right - left;
+    // let dY = top -bottom;
+    // let dZ = zFar - zNear;
+    //
+    // return new this([(2 * zNear) / dX, 0, 0, 0,
+    //                   0, (2 * zNear) / dY, 0, 0,
+    //                   (right + left) / dX, (top + bottom) / dY, -(zFar + zNear) / dZ, -1,
+    //                   0, 0, -(2 * zFar * zNear) / dZ, 0]);
 
-    let dX = right - left;
-    let dY = top -bottom;
-    let dZ = zFar - zNear;
+    //WebGLfoundementals perspective matrix
+    let f = Math.tan(Math.PI * 0.5 - 0.5 * fov);
+    let rangeInv = 1.0 / (zNear - zFar);
 
-    return new this([(2 * zNear) / dX, 0, 0, 0,
-                      0, (2 * zNear) / dY, 0, 0,
-                      (right + left) / dX, (top + bottom) / dY, -(zFar + zNear) / dZ, -1,
-                      0, 0, -(2 * zFar * zNear) / dZ, 0]);
+    return new this([f / aspectRatio, 0, 0, 0,
+                     0, f, 0, 0,
+                     0, 0, (zNear + zFar) * rangeInv, -1,
+                     0, 0, zNear * zFar * rangeInv * 2, 0]);
   }
 
   transponse(){
