@@ -116,13 +116,14 @@ class Object {
   updateModelMatrix(){
     if(this.modelMatrixUpdate === false) return;
 
-    let position = Matrix44f.initTranslation(this.position.getX(), this.position.getY(), this.position.getZ());
+    let translation = Matrix44f.initTranslation(this.position.getX(), this.position.getY(), this.position.getZ());
     let rotation = Matrix44f.initRotation(MathExt.degreeToRadians(this.rotation.getX()),
                                           MathExt.degreeToRadians(this.rotation.getY()),
                                           MathExt.degreeToRadians(this.rotation.getZ()));
+                                          
     let scale = Matrix44f.initScale(this.scale.getX(), this.scale.getY(), this.scale.getZ());
 
-    this.modelMatrix = Matrix44f.mulArray([this.matrix, position, rotation, scale]);
+    this.modelMatrix = Matrix44f.mulArray([this.matrix, scale, rotation, translation]);
     this.modelMatrixUpdate === false;
   }
 

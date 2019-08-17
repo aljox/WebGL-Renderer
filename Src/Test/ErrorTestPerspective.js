@@ -10,6 +10,9 @@ function main() {
 }
 
 function test(renderEngine) {
+  let translation = [-100, 40, -360];
+  let rotation = [190, 40, 325];
+  let scale = [1, 1, 1];
 
   let program = renderEngine.getPrograms()[0];
 
@@ -19,20 +22,16 @@ function test(renderEngine) {
   let renderModel = renderEngine.getRenderModels()[0];
   renderModel.addToVertexArray(colorBuffer);
 
-  let translation = [-100, 0, -360];
-  let rotation = [MathExt.degreeToRadians(190), MathExt.degreeToRadians(40), MathExt.degreeToRadians(325)];
-  let scale = [1, 1, 1];
+  renderModel.setPosition(new Vec3f(translation[0], translation[1], translation[2]));
+  renderModel.setRotation(new Vec3f(rotation[0], rotation[1], rotation[2]));
+  renderModel.setScale(new Vec3f(scale[0], scale[1], scale[2]));
+  renderModel.updateModelMatrix();
 
   let perspective = Matrix44f.initPerspective(MathExt.degreeToRadians(45), gl.canvas.clientWidth / gl.canvas.clientHeight, 1, 2000);
 
-  let translate = Matrix44f.initTranslation(translation[0], translation[1], translation[2]);
-  let rotate = Matrix44f.initRotation(rotation[0], rotation[1], rotation[2]);
-  let scalE = Matrix44f.initScale(scale[0], scale[1], scale[2]);
-
-  let matrix = Matrix44f.mulArray([scalE, rotate, translate, perspective]);
+  let matrix = Matrix44f.mulArray([renderModel.getModelMatrix(), perspective]);
   let matrixUniform = new UniformMatrix("u_matrix", "4fv", matrix);
   let uniformArray = new UniformArray([matrixUniform], null, null);
-
 
   let renderer = new Renderer(1);
   renderer.render(gl.canvas, program, renderModel.getVertexArray(), uniformArray);
