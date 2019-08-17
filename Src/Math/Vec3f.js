@@ -39,8 +39,16 @@ class Vec3f{
   }
 
   normalise(){
-    let length = 1 / this.length();
-    this.mulScalar(length);
+    let length = this.length();
+
+    // Check division with zero
+    if(this.length() > 0.00001){
+      length = 1 / this.length();
+      this.mulScalar(length);
+    } else {
+      return new Vec3f(0, 0, 0);
+    }
+
   }
 
   dot(vector){
