@@ -10,7 +10,7 @@ function main() {
 }
 
 function test(renderEngine) {
-  let translation = [-100, 40, -360];
+  let translation = [0, 0, 0];
   let rotation = [190, 40, 325];
   let scale = [1, 1, 1];
 
@@ -27,9 +27,15 @@ function test(renderEngine) {
   renderModel.setScale(new Vec3f(scale[0], scale[1], scale[2]));
   renderModel.updateModelMatrix();
 
-  let perspective = Matrix44f.initPerspective(MathExt.degreeToRadians(45), gl.canvas.clientWidth / gl.canvas.clientHeight, 1, 2000);
+  let perspectiveCamera = new PerspectiveCamera(45, 1, 2000);
+  perspectiveCamera.setPosition(new Vec3f(50, -30, 400));
+  //perspectiveCamera.lookAt(renderModel);
+  perspectiveCamera.buildViewMatrixInverse();
 
-  let matrix = Matrix44f.mulArray([renderModel.getModelMatrix(), perspective]);
+  let matrix = Matrix44f.mulArray([renderModel.getModelMatrix(),
+                                    perspectiveCamera.getViewMatrixInverse(),
+                                      perspectiveCamera.getProjectionMatrix()]);
+
   let matrixUniform = new UniformMatrix("u_matrix", "4fv", matrix);
   let uniformArray = new UniformArray([matrixUniform], null, null);
 

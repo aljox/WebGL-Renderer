@@ -38,13 +38,13 @@ class Vec3f{
     return new Vec3f(this.x / scalar, this.y / scalar, this.z / scalar);
   }
 
-  normalise(){
-    let length = this.length();
+  static normalise(vector){
+    let length = vector.length();
 
     // Check division with zero
-    if(this.length() > 0.00001){
-      length = 1 / this.length();
-      this.mulScalar(length);
+    if(length > 0.00001){
+      length = 1 / length;
+      return vector.mulScalar(length);
     } else {
       return new Vec3f(0, 0, 0);
     }
@@ -57,11 +57,15 @@ class Vec3f{
 
   //this * vector
   crossProduct(vector){
-    if(this.equal(vector)) throw ("Croos product ERROR: vectors are equal --> posibility of undefined results");
+    if(this.equals(vector)) throw ("Croos product ERROR: vectors are equal --> posibility of undefined results");
 
     return new Vec3f(this.y * vector.getZ() - this.z * vector.getY(),
                     this.z * vector.getX() - this.x * vector.getZ(),
                     this.x * vector.getY() - this.y * vector.getX());
+  }
+
+  static length(vector){
+    return Math.sqrt(vector.getX() * vector.getX() + vector.getY() * vector.getY() + vector.getZ() * vector.getZ());
   }
 
   length(){
