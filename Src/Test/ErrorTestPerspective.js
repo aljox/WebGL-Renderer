@@ -29,8 +29,9 @@ function test(renderEngine) {
 
   let perspectiveCamera = new PerspectiveCamera(45, 1, 2000);
   perspectiveCamera.setPosition(new Vec3f(50, -30, 400));
-  //perspectiveCamera.lookAt(renderModel);
-  perspectiveCamera.buildViewMatrixInverse();
+  perspectiveCamera.setRotation(new Vec3f(0, 45, 0));
+  perspectiveCamera.lookAt(renderModel);
+  //perspectiveCamera.buildViewMatrixInverse();
 
   let matrix = Matrix44f.mulArray([renderModel.getModelMatrix(),
                                     perspectiveCamera.getViewMatrixInverse(),
