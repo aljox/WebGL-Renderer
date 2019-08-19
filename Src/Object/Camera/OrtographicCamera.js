@@ -1,6 +1,8 @@
-class OrtigraphicCamera extends Camera {
+class OrtographicCamera extends Camera {
   constructor(left, right, bottom, top, near, far){
     super();
+
+    this.type = "Ortographic_Camera";
 
     this.left = left;
     this.right = right;

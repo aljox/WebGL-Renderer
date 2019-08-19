@@ -2,6 +2,8 @@ class PerspectiveCamera extends Camera {
   constructor(fov, zNear, zFar){
     super();
 
+    this.type = "Perspective_Camera";
+
     // Fov - in Degrees
     this.fov = fov;
     this.aspectRatio = gl.canvas.clientWidth / gl.canvas.clientHeight;

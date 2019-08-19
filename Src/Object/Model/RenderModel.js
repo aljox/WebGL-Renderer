@@ -1,6 +1,7 @@
 class RenderModel extends Object {
   constructor(vertexArray){
     super();
+    this.type = "Render_Model"
     this.vertexArray = vertexArray;
   }
 

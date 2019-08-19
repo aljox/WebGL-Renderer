@@ -1,6 +1,7 @@
 class Object {
   constructor(){
     this.visible = true;
+    this.type = "";
 
     //local position, rotation, scale
     this.position = new Vec3f(0.0, 0.0, 0.0);
@@ -21,6 +22,12 @@ class Object {
   setVisible(visible){
     if(visible != this.visible){
       this.visible = visible;
+    }
+  }
+
+  setType(type){
+    if(type != this.type){
+      this.type = type;
     }
   }
 
@@ -120,13 +127,19 @@ class Object {
     let rotation = Matrix44f.initRotation(MathExt.degreeToRadians(this.rotation.getX()),
                                           MathExt.degreeToRadians(this.rotation.getY()),
                                           MathExt.degreeToRadians(this.rotation.getZ()));
-                                          
+
     let scale = Matrix44f.initScale(this.scale.getX(), this.scale.getY(), this.scale.getZ());
 
     this.modelMatrix = Matrix44f.mulArray([this.matrix, scale, rotation, translation]);
     this.modelMatrixUpdate === false;
   }
 
+  addUniform(uniform){
+    if(!uniform instanceof Uniform) throw Error("Passed parameter is not uniform!");
+    this.objectUniforms.push(uniform);
+  }
+
+  getType() {return this.type;}
   getVisible(){return this.visible;}
   getPostion(){return this.position;}
   getRotation(){return this.rotation;}
