@@ -2,9 +2,10 @@ class Renderer{
   constructor(rendererID){
     this.rendererID = rendererID;
     this.count = 0;
-    this.clearColor = [1, 1, 1, 1];
+    this.clearColor = [0, 0, 0, 1];
   }
 
+  //Todo: multiple object rendering
   render(canvas, program, vertexArray, uniformArray){
     this.updateClearColour();
     this.clear();
@@ -28,6 +29,39 @@ class Renderer{
     }
 
   }
+
+  // TODO: Test Multiple object rendering!  
+  //
+  // render(canvas, programs, objects, uniformArray){
+  //   this.updateClearColour();
+  //   this.clear();
+  //   this.updateViewPort(canvas);
+  //
+  //   gl.enable(gl.CULL_FACE);
+  //   gl.enable(gl.DEPTH_TEST);
+  //
+  //   for(let object of objects){
+  //     this.updateCount(object.getVertexArray());
+  //
+  //     let objectUniforms = object.getUniforms();
+  //     uniformArray.addObjectUniformArray(perObjectUniform);
+  //
+  //     let program = determineProgram(object.getType(), programs);
+  //     gl.useProgram(program);
+  //     program.setProgramParameters(object.getVertexArray(), uniformArray);
+  //
+  //     if(object.getVertexArray().getIndexBuffer() === null){
+  //       gl.drawArrays(gl.TRIANGLES, 0, this.count);
+  //     } else {
+  //       object.getVertexArray().getIndexBuffer().bind();
+  //       gl.drawElements(gl.TRIANGLES, this.count, gl.UNSIGNED_SHORT, 0);
+  //     }
+  //   }
+  // }
+  //
+  // determineProgram(type, programs){
+  //   //TODO: Chooses appropriate program based on object type
+  // }
 
   updateClearColour(){
     let colour = this.clearColor;
