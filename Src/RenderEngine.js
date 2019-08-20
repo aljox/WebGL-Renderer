@@ -1,7 +1,16 @@
-//global definiton of gl context
+// Global definiton of gl context
 let gl;
 
+/**
+* Entry point
+*/
 class RenderEngine {
+
+  /*
+  * Input:
+  * 1. shaderList -> Array of shader file names
+  * 2. modelList -> Array of model file names
+  */
   constructor(shaderList, modelList){
     this.shaderList = shaderList;
     this.modelList = modelList;
@@ -29,6 +38,9 @@ class RenderEngine {
     }
   }
 
+  /*
+  * Create programs and render models from sources
+  */
   initaliseData(){
     let loadMan = new LoaderManager(this, this.shaderList, this.modelList);
     loadMan.executeLoad();
@@ -62,13 +74,13 @@ class RenderEngine {
     }
   }
 
-  waitSetRenderModels(callback){
+  waitToSetRenderModels(callback){
     if(this.renderModelsSetted){
       console.log("Render Models Setted!");
       callback(this);
     } else {
       setTimeout(function() {
-          this.waitSetRenderModels(callback);
+          this.waitToSetRenderModels(callback);
         }.bind(this), 50);
     }
   }

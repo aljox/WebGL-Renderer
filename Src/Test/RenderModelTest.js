@@ -4,7 +4,7 @@ let modelList = ["Test.obj"];
 window.onload = function(){
   let renderEngine = new RenderEngine(shaderList, modelList);
   renderEngine.initialise();
-  renderEngine.waitSetRenderModels(test);
+  renderEngine.waitToSetRenderModels(test);
 }
 
 function test(renderEngine){

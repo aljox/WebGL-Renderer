@@ -1,6 +1,8 @@
 const NUM_OF_COMPONENTS_PER_VERT = 3;
 
-//class for loading from obj file format
+/*
+* Load models from .obj format
+*/
 class Model{
   constructor(data){
     this.data = data;
@@ -13,18 +15,21 @@ class Model{
     this.buildFromObj();
   }
 
-  //TODO: solution for beter match declaration
-  //TODO: support for faces, etc.
-  //TODO: more or less than 3 vertices
+  /*
+  * Parses source .obj for data
+  * TODO: solution for beter match declaration
+  * TODO: support for faces, etc.
+  * TODO: more or less than 3 vertices
+  */
   buildFromObj(){
     let vertexMatch = this.data.match(/^v( -?\d+(\.\d+)?){3}$/gm);
     let textureMatch = this.data.match(/^vt( -?\d+(\.\d+)?){3}$/gm);
     let normalMatch = this.data.match(/^vn( -?\d+(\.\d+)?){3}$/gm);
 
-    //let faceVertMatch = data.match(/^f( -?\d+?\/){4}$/gm);
-    //let faceVertTextNorMatch = data.match(/^f( -?\d+?\/\d+?\/\d+?){4}$/gm);
-    //let faceVertTextMatch = data.match(/^f( -?\d+?\/\d+?){4}$/gm);
-    //let faceVertNorMatch = data.match(/^f( -?\d+?\/\/\d+?){4}$/gm);
+    // let faceVertMatch = data.match(/^f( -?\d+?\/){4}$/gm);
+    // let faceVertTextNorMatch = data.match(/^f( -?\d+?\/\d+?\/\d+?){4}$/gm);
+    // let faceVertTextMatch = data.match(/^f( -?\d+?\/\d+?){4}$/gm);
+    // let faceVertNorMatch = data.match(/^f( -?\d+?\/\/\d+?){4}$/gm);
 
     let polygonMatch = this.data.match(/^p( -?\d+?){3}$/gm);
     let polygonVertTextNorMatch = this.data.match(/^p( -?\d+?\/\d+?\/\d+?){3}$/gm);
@@ -104,6 +109,9 @@ class Model{
   getIndexBuffer(){return this.indexBuffer;}
   getIndexBufferSpec(){return this.indexBufferSpec;}
 
-  //Necessery in this order!
+  /*
+  * Get model data for further processing
+  * Necessery in this order!
+  */
   getModelData(){return [this.vertices, this.textureCord, this.normals]};
 }

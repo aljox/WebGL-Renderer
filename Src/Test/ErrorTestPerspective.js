@@ -6,7 +6,7 @@ let modelList = ["modelF.obj"];
 function main() {
   let renderEngine = new RenderEngine(shaderList, modelList);
   renderEngine.initialise();
-  renderEngine.waitSetRenderModels(test);
+  renderEngine.waitToSetRenderModels(test);
 }
 
 function test(renderEngine) {

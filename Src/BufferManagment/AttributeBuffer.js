@@ -1,5 +1,10 @@
-//Data must be passed in correct array cast!
 class AttributeBuffer{
+  /*
+  * Input:
+  * type -> webGl type of buffer
+  * data -> array of buffer data; Must be cast in necessary format
+  * usage -> webGl type of usage
+  */
   constructor(type, data, usage){
     this.type = type;
     this.data = data;

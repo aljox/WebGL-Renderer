@@ -3,19 +3,19 @@ class Object {
     this.visible = true;
     this.type = "";
 
-    //local position, rotation, scale
+    // Local position, rotation, scale
     this.position = new Vec3f(0.0, 0.0, 0.0);
     this.rotation = new Vec3f(0, 0, 0);
     this.scale = new Vec3f(1, 1, 1);
 
-    //matrix - stores outside transformations
+    // Outside transformations
     this.matrix = Matrix44f.initIdentity();
 
-    //combined local and outside transformations --> set object in world
+    // Combined local and outside transformation
     this.modelMatrix = Matrix44f.initIdentity();
     this.modelMatrixUpdate = false;
 
-    //TODO: uniform manipulation
+    // TODO: Object uniform manipulation
     this.objectUniforms = [];
   }
 
@@ -120,6 +120,9 @@ class Object {
     this.modelMatrixUpdate = true;
   }
 
+  /*
+  * Build model matrix from local position, rotation, scale and outside transfformations
+  */
   updateModelMatrix(){
     if(this.modelMatrixUpdate === false) return;
 

@@ -6,9 +6,11 @@ class LoaderManager {
     this.loadShaderObj = [];
     this.loadModelObj = [];
   }
-
-  //Create appropriate loader object for each file url in loadList
-  //Load each file
+  
+  /*
+  *Create loader object for each file url in loadList
+  *Load each file
+  */
   executeLoad(){
     this.loadShaders();
     this.loadModels();

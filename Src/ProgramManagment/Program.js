@@ -9,17 +9,24 @@ class Program {
     this.setLocations();
   }
 
-  //Input: param1: vertexArray
-  //       param2: uniformArray
+  /*
+  * Sets attributes and uniforms for program
+  * Input:
+  * 1. VertexArray vertexArray
+  * 2. UniformArray uniformArray
+  */
   setProgramParameters(vertexArray, uniformArray){
     this.setAttributes(vertexArray);
     this.setUniforms(uniformArray);
   }
 
-  //Set attributes according to specified locations - names of attributes must be in sync with names of locations.
-  //Example:
-  //-Name of location: a_nameLoc
-  //-Name of attribute: a_name
+  /*
+  * Set attributes according to specified locations - names of attributes must be in sync with names of locations.
+  * Setting buffer follows basic webGl procedure of setting buffer
+  * Example:
+  * -Name of location: a_nameLoc
+  * -Name of attribute: a_name
+  */
   setAttributes(vertexArray){
     let attribLocationNames = this.vertexShader.getAttributeLocationNames().concat(this.fragmentShader.getAttributeLocationNames());
 
@@ -43,7 +50,7 @@ class Program {
     }
   }
 
-  //Search buffer according to location name
+  //Search if exists location name for buffer
   findIndexVertex(name, vertexBufferArray){
     for(let i = 0; i < vertexBufferArray.length; i++){
       if(vertexBufferArray[i].getName() === name){
@@ -53,13 +60,13 @@ class Program {
     return -1;
   }
 
-  //TODO: Add support for per object uniforms
+  //TODO: Add support for per object uniforms, complete for all webGl uniform types
   setUniforms(uniformArray){
     let uniformLocationNames = this.vertexShader.getUniformLocationNames().concat(this.fragmentShader.getUniformLocationNames());
 
     let universalUniform = uniformArray.getUniversalUniform();
     for(let name of uniformLocationNames){
-      //Not complete for all gl.uniform commands
+
       if(name === "u_sampler") continue;
 
       let index = this.findIndexUniform(name, universalUniform);
@@ -81,7 +88,7 @@ class Program {
     }
   }
 
-  //Search uniforms according to location name
+  //Search if exists location name for uniform
   findIndexUniform(name, universalUniform){
     for(let i = 0; i < universalUniform.length; i++){
       if(universalUniform[i].getName() === name){

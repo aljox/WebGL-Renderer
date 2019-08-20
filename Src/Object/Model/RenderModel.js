@@ -5,14 +5,18 @@ class RenderModel extends Object {
     this.vertexArray = vertexArray;
   }
 
+  /*
+  * Build RenderModel from Model
+  * Input: Model model
+  * Output: RenderModel renderModel
+  */
   static buildFromModel(model){
     let modelData = model.getModelData();
     let modelIndexDataSpec = model.getIndexBufferSpec();
     let modelIndexData = model.getIndexBuffer();
 
-    //Set indexBuffer
+    // Set index buffer
     let indexBuffer;
-
     if(modelIndexDataSpec === null) indexBuffer = null;
     else if(modelIndexDataSpec != "POLYGON_MATCH"){
       RenderModel.buildNewBufferToIndex(modelData);
@@ -25,7 +29,7 @@ class RenderModel extends Object {
       indexBuffer = new IndexBuffer(modelIndexData, "STATIC_DRAW");
     }
 
-    //Set array of vertexBuffer
+    // Build vertexArray
     let buffers = [];
 
     for(let i = 0; i < modelData.length; i++){
@@ -53,7 +57,8 @@ class RenderModel extends Object {
     return new this(new VertexArray(buffers, indexBuffer));
   }
 
-  //TODO: complete function - not urgent
+  // TODO: complete function - not urgent
+  // Build index buffer from data
   static buildNewBufferToIndex(modelData){
     console.log("Not finished.");
   }

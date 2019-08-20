@@ -1,5 +1,14 @@
-//Specification for buffer - for read WebGL
+/*
+* WebGl buffer specification
+*/
 class Buffer{
+  /*
+  * name -> name of buffer in shader; Must be in format "a_..."
+  * attributeBuffer -> AttributeBuffer
+  * numOfComponents -> number of components per vector
+  * typeOfValue -> webGl type of value
+  * normalisation -> boolean
+  */
   constructor(name, attributeBuffer, numOfComponents, typeOfValue, normalisation){
     this.name = name;
     this.attributeBuffer = attributeBuffer;

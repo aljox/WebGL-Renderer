@@ -1,4 +1,10 @@
 class Uniform {
+  /*
+  * Input:
+  * 1. name -> same name as in shader; Must be in form: "u_..."
+  * 2. property -> definition of uniform as in webGl. Examples: "4fv", "3fv", "1f", ...
+  * 3. value -> if value is multidimensional use array, if value is matrix use UniformMatrix
+  */
   constructor(name, property, value){
     this.name = name;
     this.property = property;
@@ -12,7 +18,7 @@ class Uniform {
   getValue(){return this.value;}
 }
 
-//Matrix is Matrix33 or Matrix44 object
+
 class UniformMatrix extends Uniform{
   constructor(name, property, matrix){
     super(name, "Matrix" + property, new Float32Array(matrix.getMatrix()));
@@ -27,14 +33,18 @@ class UniformMatrix extends Uniform{
   getMatrix(){return this.matrix;}
 }
 
-//TODO: Update to 3D
 
-//Matrix is array of 5 Matrix33 or Matrix44 loadObjects
-//First_Element: scaleX
-//Second_Element: scaleY
-//Third_Element: translation x
-//Fouth_Element: translation y
-//Fifth_Element: rotation
+
+/*
+* TODO: Update to 3D, redractor to Matrix44f
+*
+* Matrix is array of 5 Matrix33 or Matrix44 loadObjects
+* First_Element: scaleX
+* Second_Element: scaleY
+* Third_Element: translation x
+* Fouth_Element: translation y
+* Fifth_Element: rotation
+*/
 class ObjectManipulationUniform extends Uniform{
   constructor(name, property, matrixArray){
     let infoMatrix = matrixArray[0];

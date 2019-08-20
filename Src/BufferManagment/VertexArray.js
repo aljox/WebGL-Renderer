@@ -1,18 +1,30 @@
-//Main function of vertexArray is to combine multiple buffers into one uniform for better performance
+/*
+* Collection of buffers
+* Stores all buffers object contains
+* Combines buffers into one buffer for better performance
+*/
 class VertexArray{
+  /*
+  * vertexBufferArray -> Array of Buffer
+  * indexBuffer -> buffer for indexing
+  */
   constructor(vertexBufferArray, indexBuffer){
-    //vertexBufferArray - array of buffers defined by bufferSpec
     this.vertexBufferArray = vertexBufferArray;
     this.indexBuffer = indexBuffer;
     this.combinedBuffer = null;
   }
 
+  /*
+  * Combine buffers into one buffer
+  * Input: vertexBufferArray
+  * Output: combinedBuffer
+  */
   combineBuffers(){
     if(!this.canCombine()) throw ("Cannot combine - buffer sizes or buffer data not compatible.");
 
     let buffer = [];
 
-    //combine all buffers
+    // Combine buffers
     for(let numIteration = 0; numIteration < this.vertexBufferArray[0].numOfVertex(); numIteration++){
       for(let i = 0; i < this.vertexBufferArray.length; i++){
         let bufferData = this.vertexBufferArray[i].getAttributeBuffer().getData();
@@ -40,6 +52,10 @@ class VertexArray{
     this.combinedBuffer = new VertexBuffer(buffer, infoSetter.getUsage());
   }
 
+  /*
+  * Buffer can be combined only if all buffers have same data
+  * type and if they share same value of numOfVertex
+  */
   canCombine(){
     let numOfVertex = this.vertexBufferArray[0].numOfVertex();
     let dataType = this.vertexBufferArray[0].getTypeOfValue();

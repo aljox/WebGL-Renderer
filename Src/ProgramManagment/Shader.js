@@ -9,7 +9,10 @@ class Shader {
     this.shader = this.createAndCompileShader();
   }
 
-  //Parse source to get location names - must be in format a_nameofattribute or u_nameofuniform
+  /*
+  * IMPORTANT: Location names must be in formats a_nameofattribute or u_nameofuniform
+  * Parse source to get location names
+  */
   setLocationNames(){
     let indexMain = -1;
     let index = 0;

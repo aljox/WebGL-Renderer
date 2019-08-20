@@ -1,4 +1,3 @@
-//TODO: implement per object uniforms
 class UniformArray {
   constructor(universalUniform, perObjectUniform){
     this.universalUniform = universalUniform;
@@ -11,7 +10,7 @@ class UniformArray {
   }
 
   addUniversalUniformArray(uniforms){
-    // Todo: Error Check
+    // TODO: Error Check
 
     this.universalUniform.push(...uniforms);
   }
@@ -22,7 +21,7 @@ class UniformArray {
   }
 
   addObjectUniformArray(uniforms){
-    // Todo: error Check
+    // TODO: error Check
 
     this.perObjectUniform.push(...uniforms);
   }

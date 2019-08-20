@@ -1,3 +1,6 @@
+/*
+* Performs rendering per object
+*/
 class Renderer{
   constructor(rendererID){
     this.rendererID = rendererID;
@@ -5,17 +8,13 @@ class Renderer{
     this.clearColor = [0, 0, 0, 1];
   }
 
-  //Todo: multiple object rendering
   render(canvas, program, vertexArray, uniformArray){
     this.updateClearColour();
     this.clear();
     this.updateViewPort(canvas);
     this.updateCount(vertexArray);
 
-    // Turn on culling
     gl.enable(gl.CULL_FACE);
-
-    // Enable the depth buffer
     gl.enable(gl.DEPTH_TEST);
 
     gl.useProgram(program.getProgram());
@@ -30,7 +29,7 @@ class Renderer{
 
   }
 
-  // TODO: Test Multiple object rendering!  
+  // TODO: Test Multiple object rendering!
   //
   // render(canvas, programs, objects, uniformArray){
   //   this.updateClearColour();
@@ -90,6 +89,11 @@ class Renderer{
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   }
 
+  /*
+  * Automatically caluculates number of primitives being rendered
+  * Input: VertexArray vertexArray
+  * Output: this.count
+  */
   updateCount(vertexArray){
     if(vertexArray.getIndexBuffer() === null){
       let bufferSpec = vertexArray.getElemetVertexBufferArray(0);

@@ -1,9 +1,10 @@
 class Camera extends Object{
   constructor(){
     super();
-    
+
     this.type = "Camera";
-    // View matrix is acctualy model matrix in Object class!
+
+    // View matrix is model matrix for camera
     this.viewMatrixInverse = Matrix44f.initIdentity();
     this.projectionMatrix = Matrix44f.initIdentity();
 
@@ -15,7 +16,9 @@ class Camera extends Object{
     this.viewMatrixInverse = Matrix44f.inverse(this.modelMatrix);
   }
 
-  // Target - instance of Object
+  /*
+  * Input: Object target
+  */
   lookAt(target){
     this.updateModelMatrix();
 
