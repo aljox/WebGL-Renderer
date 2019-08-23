@@ -8,59 +8,43 @@ class Renderer{
     this.clearColor = [0, 0, 0, 1];
   }
 
-  render(canvas, program, vertexArray, uniformArray){
+  render(canvas, programs, objects, uniformArray){
     this.updateClearColour();
     this.clear();
     this.updateViewPort(canvas);
-    this.updateCount(vertexArray);
 
     gl.enable(gl.CULL_FACE);
     gl.enable(gl.DEPTH_TEST);
 
-    gl.useProgram(program.getProgram());
-    program.setProgramParameters(vertexArray, uniformArray);
+    for(let object of objects){
+      uniformArray.clearPerObjectUniforms();
+      this.updateCount(object.getVertexArray());
 
-    if(vertexArray.getIndexBuffer() === null){
-      gl.drawArrays(gl.TRIANGLES, 0, this.count);
-    } else {
-      vertexArray.getIndexBuffer().bind();
-      gl.drawElements(gl.TRIANGLES, this.count, gl.UNSIGNED_SHORT, 0);
+      let objectUniforms = object.getUniforms();
+      uniformArray.addObjectUniformArray(objectUniforms);
+
+      let program = this.determineProgram(object.getType(), programs);
+      gl.useProgram(program.getProgram());
+      program.setProgramParameters(object.getVertexArray(), uniformArray);
+
+      if(object.getVertexArray().getIndexBuffer() === null){
+        gl.drawArrays(gl.TRIANGLES, 0, this.count);
+      } else {
+        object.getVertexArray().getIndexBuffer().bind();
+        gl.drawElements(gl.TRIANGLES, this.count, gl.UNSIGNED_SHORT, 0);
+      }
     }
-
   }
 
-  // TODO: Test Multiple object rendering!
-  //
-  // render(canvas, programs, objects, uniformArray){
-  //   this.updateClearColour();
-  //   this.clear();
-  //   this.updateViewPort(canvas);
-  //
-  //   gl.enable(gl.CULL_FACE);
-  //   gl.enable(gl.DEPTH_TEST);
-  //
-  //   for(let object of objects){
-  //     this.updateCount(object.getVertexArray());
-  //
-  //     let objectUniforms = object.getUniforms();
-  //     uniformArray.addObjectUniformArray(perObjectUniform);
-  //
-  //     let program = determineProgram(object.getType(), programs);
-  //     gl.useProgram(program);
-  //     program.setProgramParameters(object.getVertexArray(), uniformArray);
-  //
-  //     if(object.getVertexArray().getIndexBuffer() === null){
-  //       gl.drawArrays(gl.TRIANGLES, 0, this.count);
-  //     } else {
-  //       object.getVertexArray().getIndexBuffer().bind();
-  //       gl.drawElements(gl.TRIANGLES, this.count, gl.UNSIGNED_SHORT, 0);
-  //     }
-  //   }
-  // }
-  //
-  // determineProgram(type, programs){
-  //   //TODO: Chooses appropriate program based on object type
-  // }
+  determineProgram(type, programs){
+    for(let program of programs){
+      if(program.getUse().search(type) != -1){
+        return program;
+      }
+    }
+
+    throw Error("Program for " + type + " was not found!");
+  }
 
   updateClearColour(){
     let colour = this.clearColor;
