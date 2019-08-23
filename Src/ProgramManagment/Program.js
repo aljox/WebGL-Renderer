@@ -1,5 +1,6 @@
 class Program {
   constructor(vertexShader, fragmentShader){
+    this.use = "Unknown";
     this.vertexShader = vertexShader;
     this.fragmentShader = fragmentShader;
     this.attributeLocations = {};
@@ -60,38 +61,41 @@ class Program {
     return -1;
   }
 
-  //TODO: Add support for per object uniforms, complete for all webGl uniform types
+  //TODO: Complete for all webGl uniform types
   setUniforms(uniformArray){
     let uniformLocationNames = this.vertexShader.getUniformLocationNames().concat(this.fragmentShader.getUniformLocationNames());
 
-    let universalUniform = uniformArray.getUniversalUniform();
+    let uniforms = [];
+    uniforms.push(...uniformArray.getUniversalUniform());
+    uniforms.push(...uniformArray.getPerObjectUniform());
+
     for(let name of uniformLocationNames){
 
       if(name === "u_sampler") continue;
 
-      let index = this.findIndexUniform(name, universalUniform);
+      let index = this.findIndexUniform(name, uniforms);
       if(index === -1) throw Error("Property " + name + " not found in uniformArray object");
 
-      if(universalUniform[index].getProperty().search("1") != -1){
-        gl["uniform" + universalUniform[index].getProperty()](this.uniformLocations[name + "Loc"], universalUniform[index].getValue());
+      if(uniforms[index].getProperty().search("1") != -1){
+        gl["uniform" + uniforms[index].getProperty()](this.uniformLocations[name + "Loc"], uniforms[index].getValue());
 
-      } else if(universalUniform[index].getProperty().search("2") != -1) {
+      } else if(uniforms[index].getProperty().search("2") != -1) {
 
-        let valueArray =  universalUniform[index].getValue();
-        gl["uniform" + universalUniform[index].getProperty()](this.uniformLocations[name + "Loc"], valueArray[0], valueArray[1]);
-      } else if(universalUniform[index].getProperty().search("3fv") != -1){
-        gl["uniform" + universalUniform[index].getProperty()](this.uniformLocations[name + "Loc"], false, universalUniform[index].getValue());
+        let valueArray =  uniforms[index].getValue();
+        gl["uniform" + uniforms[index].getProperty()](this.uniformLocations[name + "Loc"], valueArray[0], valueArray[1]);
+      } else if(uniforms[index].getProperty().search("3fv") != -1){
+        gl["uniform" + uniforms[index].getProperty()](this.uniformLocations[name + "Loc"], false, uniforms[index].getValue());
 
-      } else if(universalUniform[index].getProperty().search("4fv") != -1){
-        gl["uniform" + universalUniform[index].getProperty()](this.uniformLocations[name + "Loc"], false, universalUniform[index].getValue());
+      } else if(uniforms[index].getProperty().search("4fv") != -1){
+        gl["uniform" + uniforms[index].getProperty()](this.uniformLocations[name + "Loc"], false, uniforms[index].getValue());
       }
     }
   }
 
   //Search if exists location name for uniform
-  findIndexUniform(name, universalUniform){
-    for(let i = 0; i < universalUniform.length; i++){
-      if(universalUniform[i].getName() === name){
+  findIndexUniform(name, uniforms){
+    for(let i = 0; i < uniforms.length; i++){
+      if(uniforms[i].getName() === name){
         return i;
       }
     }
@@ -129,9 +133,12 @@ class Program {
     return program;
   }
 
-  getVertexShader(){return this.vertexShader;}
-  getFragmentShader(){return this.fragmentShader;}
-  getAttributeLocations(){return this.attributeLocations;}
-  getUniformLocations(){return this.uniformLocations;}
-  getProgram(){return this.program;}
+  setUse(use) {this.use = use;}
+
+  getUse() {return this.use;}
+  getVertexShader() {return this.vertexShader;}
+  getFragmentShader() {return this.fragmentShader;}
+  getAttributeLocations() {return this.attributeLocations;}
+  getUniformLocations() {return this.uniformLocations;}
+  getProgram() {return this.program;}
 }
