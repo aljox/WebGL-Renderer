@@ -26,6 +26,10 @@ class UniformArray {
     this.perObjectUniform.push(...uniforms);
   }
 
+  clearPerObjectUniforms() {
+    this.perObjectUniform = [];
+  }
+
   getUniversalUniform(){return this.universalUniform;}
   getPerObjectUniform(){return this.perObjectUniform;}
 
