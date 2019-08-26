@@ -11,7 +11,8 @@ class Shader {
 
   /*
   * IMPORTANT: Location names must be in formats a_nameofattribute or u_nameofuniform
-  * Parse source to get location names
+  * Struct variables must be in format: s_structVariavleName/*NameOfStructVariable*/
+  /* Parse source to get location names
   */
   setLocationNames(){
     let indexMain = -1;
@@ -19,7 +20,7 @@ class Shader {
     let indexSemicoln = -1;
     let indexBracket = -1
 
-    let searchKeyWords = [" a_", " u_"];
+    let searchKeyWords = [" a_", " u_", "s_"];
 
     for(let i = 0; i < searchKeyWords.length; i++){
       let tempString = this.source;
@@ -27,7 +28,7 @@ class Shader {
       indexMain = tempString.search("main");
 
       while(index != -1 && index < indexMain){
-        tempString = tempString.slice(index + 1);
+        tempString = tempString.slice(index);
         indexSemicoln = tempString.search(";");
         indexBracket = tempString.search("\\[");
         if(indexBracket != -1){
@@ -35,9 +36,15 @@ class Shader {
         }
 
         if(i === 0){
-          this.attributeLocationNames.push(tempString.slice(0, indexSemicoln));
-        } else {
-          this.uniformLocationNames.push(tempString.slice(0, indexSemicoln));
+          this.attributeLocationNames.push(tempString.slice(1, indexSemicoln));
+        } else if(i === 1) {
+          this.uniformLocationNames.push(tempString.slice(1, indexSemicoln));
+        } else if(i === 2){
+          let search = tempString.search("\\/\\*");
+          if(search > indexSemicoln) throw Error("Shader type error: struct variables not defined as specified.");
+
+          let uniformName = tempString.slice(search + 2, indexSemicoln - 2).concat("." + tempString.slice(0, search));
+          this.uniformLocationNames.push(uniformName);
         }
 
         tempString = tempString.slice(indexSemicoln);
@@ -46,6 +53,8 @@ class Shader {
         indexMain = tempString.search("main");
       }
     }
+
+
   }
 
   createAndCompileShader(){
