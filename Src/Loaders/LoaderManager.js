@@ -6,7 +6,7 @@ class LoaderManager {
     this.loadShaderObj = [];
     this.loadModelObj = [];
   }
-  
+
   /*
   *Create loader object for each file url in loadList
   *Load each file
@@ -22,10 +22,10 @@ class LoaderManager {
 
       switch(type){
         case "VERTEX_SHADER":
-          this.loadShaderObj.push(new VertexShaderLoader("/Lib/Shaders/ErrorTest/" + url));
+          this.loadShaderObj.push(new VertexShaderLoader("/Lib/Shaders/" + url));
           break;
         case "FRAGMENT_SHADER":
-          this.loadShaderObj.push(new FragmentShaderLoader("/Lib/Shaders/ErrorTest/" + url));
+          this.loadShaderObj.push(new FragmentShaderLoader("/Lib/Shaders/" + url));
           break;
         default:
           throw Error("Unknown shader file type.");
