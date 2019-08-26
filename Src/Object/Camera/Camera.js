@@ -26,7 +26,7 @@ class Camera extends Object{
                               this.modelMatrix.getElement(1, 3),
                                this.modelMatrix.getElement(2, 3));
 
-    let zAxis = Vec3f.normalise(position.subVec(target.getPostion()));
+    let zAxis = Vec3f.normalise(position.subVec(target.getPosition()));
     let xAxis = Vec3f.normalise(this.up.crossProduct(zAxis));
     let yAxis = Vec3f.normalise(zAxis.crossProduct(xAxis));
 
