@@ -86,6 +86,10 @@ class Program {
       } else if(uniforms[index].getProperty().search("3fv") != -1){
         gl["uniform" + uniforms[index].getProperty()](this.uniformLocations[name + "Loc"], false, uniforms[index].getValue());
 
+      } else if(uniforms[index].getProperty().search("3f") != -1){
+        let valueArray =  uniforms[index].getValue();
+        gl["uniform" + uniforms[index].getProperty()](this.uniformLocations[name + "Loc"], valueArray[0], valueArray[1], valueArray[2]);
+
       } else if(uniforms[index].getProperty().search("4fv") != -1){
         gl["uniform" + uniforms[index].getProperty()](this.uniformLocations[name + "Loc"], false, uniforms[index].getValue());
       }
