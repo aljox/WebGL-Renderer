@@ -40,7 +40,7 @@ function test(renderEngine) {
 
   // Initialise camera
   let perspectiveCamera = new PerspectiveCamera(45, 1, 2000);
-  perspectiveCamera.setPosition(new Vec3f(50, 50, 400));
+  perspectiveCamera.setPosition(new Vec3f(50, 0, 400));
   perspectiveCamera.lookAt(renderModel1);
 
   // Build matrix for first model
