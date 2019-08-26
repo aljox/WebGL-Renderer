@@ -1,7 +1,8 @@
 class RenderModel extends Object {
   constructor(vertexArray){
     super();
-    this.type = "Render_Model"
+    this.type = "Render_Model";
+    this.material = Material.initWhite();
     this.vertexArray = vertexArray;
   }
 
@@ -44,7 +45,7 @@ class RenderModel extends Object {
                                       NUM_OF_COMPONENTS_PER_VERT, "FLOAT", false));
               break;
               case 2:
-                buffers.push(new Buffer("a_normals", new VertexBuffer(modelData[i], "STATIC_DRAW"),
+                buffers.push(new Buffer("a_normal", new VertexBuffer(modelData[i], "STATIC_DRAW"),
                                         NUM_OF_COMPONENTS_PER_VERT, "FLOAT", false));
                 break;
           default:
@@ -63,9 +64,21 @@ class RenderModel extends Object {
     console.log("Not finished.");
   }
 
+  buildMaterialUniforms() {
+    this.objectUniforms.push(new Uniform("material.s_ambient", "3f", this.material.getAmbient().toArray()));
+    this.objectUniforms.push(new Uniform("material.s_diffuse", "3f", this.material.getDiffuse().toArray()));
+    this.objectUniforms.push(new Uniform("material.s_specular", "3f", this.material.getSpecular().toArray()));
+    this.objectUniforms.push(new Uniform("material.s_shininess", "1f", this.material.getShininess()));
+  }
+
   addToVertexArray(buffer){
     this.vertexArray.addVertexbuffer(buffer);
   }
 
+  setMaterial(material) {
+    this.material = material;
+  }
+
+  getMaterial() {return this.material;}
   getVertexArray(){return this.vertexArray;}
 }
