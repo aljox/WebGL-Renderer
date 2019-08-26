@@ -12,6 +12,8 @@ class VertexArray{
     this.vertexBufferArray = vertexBufferArray;
     this.indexBuffer = indexBuffer;
     this.combinedBuffer = null;
+
+    this.combineBuffers();
   }
 
   /*
@@ -67,6 +69,7 @@ class VertexArray{
 
   addVertexbuffer(buffer){
     this.vertexBufferArray.push(buffer);
+    this.combineBuffers();
   }
 
   removeVertexBuffer(buffer){
@@ -75,14 +78,18 @@ class VertexArray{
         this.vertexBufferArray.splice(i, 1);
       }
     }
+
+    this.combineBuffers();
   }
 
   removeVertexBufferIndex(i){
     this.vertexBufferArray.splice(i, 1);
+    this.combineBuffers();
   }
 
   setVertexBuffer(index, buffer){
     this.vertexBufferArray[i] = buffer;
+    this.combineBuffers();
   }
 
   getElemetVertexBufferArray(i){return this.vertexBufferArray[i];}
