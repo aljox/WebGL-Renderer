@@ -144,7 +144,7 @@ class Object {
 
   getType() {return this.type;}
   getVisible(){return this.visible;}
-  getPostion(){return this.position;}
+  getPosition(){return this.position;}
   getRotation(){return this.rotation;}
   getModelMatrix(){return this.modelMatrix;}
   getModelMatrixUpdate(){return this.modelMatrixUpdate;}
