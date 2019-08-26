@@ -89,8 +89,10 @@ class RenderEngine {
   addRenderModel(renderModel){this.renderModels.push(renderModel)};
 
   getGl(){return this.gl;}
-  getPrograms(){return this.programs}
+  getProgram(index) {return this.programs[index];}
+  getProgramArray(){return this.programs}
   getModels(){return this.models;}
   getRenderModelsSetted(){return this.renderModelsSetted;}
-  getRenderModels(){return this.renderModels;}
+  getRenderModel(index){return this.renderModels[index];}
+  getRenderModelArray(){return this.renderModels;}
 }
