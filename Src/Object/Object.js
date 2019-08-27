@@ -142,6 +142,8 @@ class Object {
     this.objectUniforms.push(uniform);
   }
 
+  clearUniforms() {this.objectUniforms = [];}
+
   getType() {return this.type;}
   getVisible(){return this.visible;}
   getPosition(){return this.position;}
