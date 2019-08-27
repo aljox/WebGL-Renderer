@@ -93,7 +93,7 @@ class Vec3f{
   setVec(vector){this.x = vector.getX(); this.y = vector.getY(); this.z = vector.getZ();}
   setX(x){this.x = x;}
   setY(y){this.y = y;}
-  setZ(x){this.z = z;}
+  setZ(z){this.z = z;}
 
   getX(){return this.x;}
   getY(){return this.y;}
