@@ -6,10 +6,10 @@ let modelList = ["Cube.obj", "CubeModel.obj"];
 function main() {
   let renderEngine = new RenderEngine(shaderList, modelList);
   renderEngine.initialise();
-  renderEngine.waitToSetRenderModels(test);
+  renderEngine.waitToSetRenderModels(initialiseModels);
 }
 
-function test(renderEngine) {
+function initialiseModels(renderEngine) {
   renderEngine.getProgram(0).setUse("Light");
   renderEngine.getProgram(1).setUse("Render_Model");
 
@@ -20,7 +20,7 @@ function test(renderEngine) {
 
   // Initialise light
   let cubeLight = new Light(renderEngine.getRenderModel(0), new Vec3f(1.0, 1.0, 1.0), 0.2, 0.5, 1.0);
-  cubeLight.setPosition(new Vec3f(10, -2, -9));
+  cubeLight.setPosition(new Vec3f(10, -2, 0));
   cubeLight.setRotation(new Vec3f(0, 0, 0));
   cubeLight.setScale(new Vec3f(2, 2, 2));
   cubeLight.updateModelMatrix();
@@ -29,7 +29,7 @@ function test(renderEngine) {
   // Initialise model
   let model = renderEngine.getRenderModel(1);
   model.setPosition(new Vec3f(-10, 0, 0));
-  model.setRotation(new Vec3f(20, -25, 0));
+  model.setRotation(new Vec3f(20, 45, 0));
   model.setScale(new Vec3f(12, 12, 12));
   model.updateModelMatrix();
 
