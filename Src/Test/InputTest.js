@@ -1,7 +1,7 @@
 "use strict";
 
 let shaderList = ["LightVertex.vertex", "LightFragment.fragment", "ObjectVertex.vertex", "ObjectFragment.fragment"];
-let modelList = ["Cube.obj", "CubeModel.obj"];
+let modelList = ["FlatGround.obj", "Cube.obj", "CubeModel.obj"];
 
 function main() {
   let renderEngine = new RenderEngine(shaderList, modelList);
@@ -15,30 +15,37 @@ function initialiseModels(renderEngine) {
 
   // Initialise camera
   let perspectiveCamera = new PerspectiveCamera(45, 1, 2000);
-  perspectiveCamera.setPosition(new Vec3f(0, 0, 100));
+  perspectiveCamera.setPosition(new Vec3f(0, 15, -10));
   perspectiveCamera.buildViewMatrixInverse();
 
+  // Initialise ground
+  let ground = renderEngine.getRenderModel(0);
+  ground.setPosition(new Vec3f(0, 0, -145));
+  ground.setScale(new Vec3f(30, 30, 30));
+  ground.updateModelMatrix();
+  ground.setMaterial(new Material(new Vec3f(0.2, 0.2, 0.2), new Vec3f(0.8, 0.8, 0.8), new Vec3f(0.95, 0.95, 0.95), 1024.0));
+
   // Initialise light
-  let cubeLight = new Light(renderEngine.getRenderModel(0), new Vec3f(1.0, 1.0, 1.0), 0.2, 0.5, 1.0);
-  cubeLight.setPosition(new Vec3f(10, -2, 0));
+  let cubeLight = new Light(renderEngine.getRenderModel(1), new Vec3f(1.0, 1.0, 1.0), 0.2, 0.7, 0.5);
+  cubeLight.setPosition(new Vec3f(10, 13, -100));
   cubeLight.setRotation(new Vec3f(0, 0, 0));
   cubeLight.setScale(new Vec3f(2, 2, 2));
   cubeLight.updateModelMatrix();
 
   // Initialise model
-  let model = renderEngine.getRenderModel(1);
-  model.setPosition(new Vec3f(-10, 0, 0));
+  let model = renderEngine.getRenderModel(2);
+  model.setPosition(new Vec3f(-10, 15, -160));
   model.setRotation(new Vec3f(20, 45, 0));
   model.setScale(new Vec3f(12, 12, 12));
   model.updateModelMatrix();
+  model.setMaterial(new Material(new Vec3f(1.0, 0.5, 0.31), new Vec3f(1.0, 0.5, 0.31), new Vec3f(0.5, 0.5, 0.5), 128.0));
 
   // Events
   let keyboardEvent = new KeyboardEvent(perspectiveCamera);
 
-  model.setMaterial(new Material(new Vec3f(1.0, 0.5, 0.31), new Vec3f(1.0, 0.5, 0.31), new Vec3f(0.5, 0.5, 0.5), 128.0));
-
   // Renderer
   let renderer = new Renderer(1);
+
   let then = 0;
   function renderScene(now) {
     // Convert to seconds
@@ -50,14 +57,14 @@ function initialiseModels(renderEngine) {
 
     // Every frame increase the rotation a little.
     let rotation = model.getRotation();
-    rotation = rotation.getX();
-    rotation += 20.0 * deltaTime;
-    model.setRotationX(rotation);
+    rotation = rotation.getY();
+    rotation -= 20.0 * deltaTime;
+    model.setRotationY(rotation);
     model.updateModelMatrix();
 
     clearUniforms();
     let uniformArray = setUniforms();
-    renderer.render(gl.canvas, renderEngine.getProgramArray(), [cubeLight, model], uniformArray);
+    renderer.render(gl.canvas, renderEngine.getProgramArray(), [ground, cubeLight, model], uniformArray);
     requestAnimationFrame(renderScene);
   }
 
@@ -91,6 +98,22 @@ function initialiseModels(renderEngine) {
     model.buildMaterialUniforms();
     cubeLight.buildUniformObjectShader(model);
 
+    // Ground uniforms
+    let groundViewMatrixGround = Matrix44f.mulArray([ground.getModelMatrix(),
+                                      perspectiveCamera.getViewMatrixInverse()]);
+    let groundViewTransoformModel = new UniformMatrix("u_modelViewTransform", "4fv", groundViewMatrixGround);
+    ground.addUniform(groundViewTransoformModel);
+
+    let normalMatrixGround = Matrix44f.transponse(Matrix44f.inverse(groundViewMatrixGround));
+    let normalMatrixUniformGround = new UniformMatrix("u_normalMatrix", "4fv", normalMatrixGround);
+    ground.addUniform(normalMatrixUniformGround);
+
+    ground.addUniform(lightPosUniform);
+    ground.addUniform(modelViewTransoformLight);
+
+    ground.buildMaterialUniforms();
+    cubeLight.buildUniformObjectShader(ground);
+
     // Global uniform
     let projectionTransform = new UniformMatrix("u_projection", "4fv", perspectiveCamera.getProjectionMatrix());
     return new UniformArray([projectionTransform], []);
@@ -98,10 +121,10 @@ function initialiseModels(renderEngine) {
 
   function clearUniforms(){
     perspectiveCamera.clearUniforms();
+    ground.clearUniforms();
     cubeLight.clearUniforms();
     model.clearUniforms();
   }
-  //renderScene();
 }
 
 main();
