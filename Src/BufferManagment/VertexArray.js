@@ -61,7 +61,7 @@ class VertexArray{
   canCombine(){
     let numOfVertex = this.vertexBufferArray[0].numOfVertex();
     let dataType = this.vertexBufferArray[0].getTypeOfValue();
-    for(const vertexBuffer of this.vertexBufferArray){
+    for(let vertexBuffer of this.vertexBufferArray){
       if(numOfVertex != vertexBuffer.numOfVertex() || dataType != vertexBuffer.getTypeOfValue()) return false;
     }
     return true;
