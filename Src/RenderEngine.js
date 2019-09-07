@@ -10,15 +10,23 @@ class RenderEngine {
   * Input:
   * 1. shaderList -> Array of shader file names
   * 2. modelList -> Array of model file names
+  * 3. textureList -> Array of texture images file names
   */
-  constructor(shaderList, modelList){
+  constructor(shaderList, modelList, textureList){
     this.shaderList = shaderList;
     this.modelList = modelList;
+    this.textureList = textureList;
+
     this.shaders = [];
     this.programs = [];
+
     this.models = [];
-    this.renderModelsSetted = false;
     this.renderModels = [];
+
+    this.textures = [];
+
+    this.renderModelsSetted = false;
+    this.textureSetted = false;
   }
 
   initialise(){
@@ -42,14 +50,15 @@ class RenderEngine {
   * Create programs and render models from sources
   */
   initaliseData(){
-    let loadMan = new LoaderManager(this, this.shaderList, this.modelList);
+    let loadMan = new LoaderManager(this, this.shaderList, this.modelList, this.textureList);
     loadMan.executeLoad();
     loadMan.waitLoad(this.setLoadData);
   }
 
-  setLoadData(renderEngine, loadShaderList, loadModelList){
+  setLoadData(renderEngine, loadShaderList, loadModelList, loadTextureList){
     RenderEngine.setPrograms(renderEngine, loadShaderList);
     RenderEngine.setModels(renderEngine, loadModelList);
+    RenderEngine.setTextures(renderEngine, loadTextureList);
   }
 
   static setModels(renderEngine, loadModelList){
@@ -74,13 +83,22 @@ class RenderEngine {
     }
   }
 
-  waitToSetRenderModels(callback){
-    if(this.renderModelsSetted){
+  static setTextures(renderEngine, loadTextureList){
+    for(let loadObj of loadTextureList){
+      renderEngine.textures.push(new Texture(loadObj.getImage()));
+    }
+
+    renderEngine.textureSetted = true;
+  }
+
+  waitToSetData(callback){
+    if(this.renderModelsSetted && this.textureSetted){
       console.log("Render Models Setted!");
+      console.log("Textures Setted!");
       callback(this);
     } else {
       setTimeout(function() {
-          this.waitToSetRenderModels(callback);
+          this.waitToSetData(callback);
         }.bind(this), 50);
     }
   }
@@ -95,4 +113,6 @@ class RenderEngine {
   getRenderModelsSetted(){return this.renderModelsSetted;}
   getRenderModel(index){return this.renderModels[index];}
   getRenderModelArray(){return this.renderModels;}
+  getTexture(index) {return this.textures[index];}
+  getTextureArray() {return this.textures;}
 }

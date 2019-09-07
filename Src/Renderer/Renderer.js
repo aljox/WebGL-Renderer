@@ -23,6 +23,11 @@ class Renderer{
       let objectUniforms = object.getUniforms();
       uniformArray.addObjectUniformArray(objectUniforms);
 
+      let objTexture = object.getTexture();
+      if(objTexture != null) {
+        objTexture.bindToTextureUnit();
+      }
+
       let program = this.determineProgram(object.getType(), programs);
       gl.useProgram(program.getProgram());
       program.setProgramParameters(object.getVertexArray(), uniformArray);

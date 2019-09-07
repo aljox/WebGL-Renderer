@@ -37,7 +37,7 @@ class Program {
       if(index === -1) throw Error("Property " + name + " not found in vertexArray object");
 
       gl.enableVertexAttribArray(this.attributeLocations[name + "Loc"]);
-
+      
       //Check if combineBuffer was created
       if(vertexArray.getCombinedBuffer() === null){
         vertexBufferArray[index].getAttributeBuffer().bind();
@@ -71,7 +71,10 @@ class Program {
 
     for(let name of uniformLocationNames){
 
-      if(name === "u_sampler") continue;
+      if(name.slice(0, name.length - 1) === "u_sampler"){
+        gl.uniform1i(this.uniformLocations[name + "Loc"], name.substr(name.length - 1, 1));
+        continue;
+      }
 
       let index = this.findIndexUniform(name, uniforms);
       if(index === -1) throw Error("Property " + name + " not found in uniformArray object");

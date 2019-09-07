@@ -3,6 +3,7 @@ class RenderModel extends Object {
     super();
     this.type = "Render_Model";
     this.material = Material.initWhite();
+    this.texture = null;
     this.vertexArray = vertexArray;
   }
 
@@ -42,7 +43,7 @@ class RenderModel extends Object {
             break;
             case 1:
               buffers.push(new Buffer("a_textureCord", new VertexBuffer(modelData[i], "STATIC_DRAW"),
-                                      NUM_OF_COMPONENTS_PER_VERT, "FLOAT", false));
+                                      NUM_OF_COMPONENTS_PER_VERT_TEXTURE, "FLOAT", false));
               break;
               case 2:
                 buffers.push(new Buffer("a_normal", new VertexBuffer(modelData[i], "STATIC_DRAW"),
@@ -75,10 +76,13 @@ class RenderModel extends Object {
     this.vertexArray.addVertexbuffer(buffer);
   }
 
-  setMaterial(material) {
-    this.material = material;
+  setMaterial(material) {this.material = material;}
+  setTexture(texture) {
+    this.texture = texture;
+    this.type = "Render_Model_Texture";
   }
 
   getMaterial() {return this.material;}
+  getTexture() {return this.texture;}
   getVertexArray(){return this.vertexArray;}
 }
