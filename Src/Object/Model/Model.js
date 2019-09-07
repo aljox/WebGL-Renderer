@@ -1,4 +1,5 @@
 const NUM_OF_COMPONENTS_PER_VERT = 3;
+const NUM_OF_COMPONENTS_PER_VERT_TEXTURE = 2;
 
 /*
 * Load models from .obj format
@@ -23,7 +24,7 @@ class Model{
   */
   buildFromObj(){
     let vertexMatch = this.data.match(/^v( -?\d+(\.\d+)?){3}$/gm);
-    let textureMatch = this.data.match(/^vt( -?\d+(\.\d+)?){3}$/gm);
+    let textureMatch = this.data.match(/^vt( -?\d+(\.\d+)?){2}$/gm);
     let normalMatch = this.data.match(/^vn( -?\d+(\.\d+)?){3}$/gm);
 
     // let faceVertMatch = data.match(/^f( -?\d+?\/){4}$/gm);
