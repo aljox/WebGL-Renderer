@@ -1,8 +1,0 @@
-attribute vec4 a_position;
-
-uniform mat4 u_modelViewTransform;
-uniform mat4 u_projection;
-
-void main() {
-  gl_Position = u_projection * u_modelViewTransform * a_position;
-}
