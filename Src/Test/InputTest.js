@@ -6,7 +6,7 @@ let modelList = ["FlatGround.obj", "Cube.obj", "CubeModel.obj"];
 function main() {
   let renderEngine = new RenderEngine(shaderList, modelList);
   renderEngine.initialise();
-  renderEngine.waitToSetRenderModels(initialiseModels);
+  renderEngine.waitToSetData(initialiseModels);
 }
 
 function initialiseModels(renderEngine) {
