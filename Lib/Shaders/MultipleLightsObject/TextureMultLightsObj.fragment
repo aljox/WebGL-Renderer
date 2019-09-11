@@ -1,0 +1,50 @@
+precision mediump float;
+
+struct DirLight {
+    vec3 s_lightColour/*dirLight*/;
+    vec3 s_direction/*dirLight*/;
+
+    float s_ambient/*dirLight*/;
+    float s_diffuse/*dirLight*/;
+    float s_specular/*dirLight*/;
+};
+
+uniform DirLight dirLight;
+uniform sampler2D u_sampler0;
+uniform mat4 u_view;
+
+varying vec2 v_textureCord;
+varying vec3 v_normal;
+varying vec3 v_fragPosition;
+
+vec3 calDirLight(DirLight dirLight, vec3 norm, vec3 viewDir, vec3 objectColour);
+
+void main() {
+  vec3 objectColour = vec3(texture2D(u_sampler0, v_textureCord));
+  vec3 norm = normalize(-v_normal);
+  vec3 viewDir = normalize(-v_fragPosition);
+  //dirLight.s_direction = vec3(u_view * vec4(dirLight.s_direction, 1.0));
+
+  vec3 result = calDirLight(dirLight, norm, viewDir, objectColour);
+
+  gl_FragColor = vec4(result, 1.0);
+}
+
+vec3 calDirLight(DirLight dirLight, vec3 norm, vec3 viewDir, vec3 objectColour){
+  vec3 lightDir = normalize(-vec3(u_view * vec4(dirLight.s_direction, 1.0)));
+
+  // ambient
+  vec3 ambient =  dirLight.s_ambient * objectColour;
+
+  // diffuse
+  float diff = max(dot(lightDir, norm), 0.0);
+  vec3 diffuse = dirLight.s_diffuse * diff * dirLight.s_lightColour * objectColour;
+
+  // specular
+  vec3 reflectDir = reflect(-lightDir, norm);
+  float spec = max(dot(viewDir, reflectDir), 0.0);
+  spec = pow(spec, 64.0);
+  vec3 specular = dirLight.s_specular * spec * dirLight.s_lightColour * objectColour;
+
+  return ambient + diffuse + specular;
+}
