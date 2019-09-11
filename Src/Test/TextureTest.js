@@ -1,6 +1,6 @@
 "use strict";
 
-let shaderList = ["BasicLight.vertex", "BasicLight.fragment", "TextureObject.vertex", "TextureObject.fragment"];
+let shaderList = ["Light/BasicLight.vertex", "Light/BasicLight.fragment", "Object/TextureObject.vertex", "Object/TextureObject.fragment"];
 let modelList = ["Cube.obj", "CubeModel.obj", "FlatGround.obj"];
 let textureList = ["trippyTexture.jpg", "brickWall.jpg"];
 
