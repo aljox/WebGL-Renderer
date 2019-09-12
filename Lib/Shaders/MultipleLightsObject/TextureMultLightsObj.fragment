@@ -1,15 +1,17 @@
 precision mediump float;
 
 struct DirLight {
-    vec3 s_lightColour/*dirLight*/;
-    vec3 s_direction/*dirLight*/;
+    vec3 s_lightColour/*dirLight[]*/;
+    vec3 s_direction/*dirLight[]*/;
 
-    float s_ambient/*dirLight*/;
-    float s_diffuse/*dirLight*/;
-    float s_specular/*dirLight*/;
+    float s_ambient/*dirLight[]*/;
+    float s_diffuse/*dirLight[]*/;
+    float s_specular/*dirLight[]*/;
 };
 
-uniform DirLight dirLight;
+#define NUM_DIR_LIGHTS 2/*dirLight*/
+uniform DirLight dirLight[NUM_DIR_LIGHTS];
+
 uniform sampler2D u_sampler0;
 uniform mat4 u_view;
 
@@ -21,18 +23,21 @@ vec3 calDirLight(DirLight dirLight, vec3 norm, vec3 viewDir, vec3 objectColour);
 
 void main() {
   vec3 objectColour = vec3(texture2D(u_sampler0, v_textureCord));
-  vec3 norm = normalize(-v_normal);
+  vec3 norm = normalize(v_normal);
   vec3 viewDir = normalize(-v_fragPosition);
-  //dirLight.s_direction = vec3(u_view * vec4(dirLight.s_direction, 1.0));
 
-  vec3 result = calDirLight(dirLight, norm, viewDir, objectColour);
+  vec3 result = vec3(0.0);
+
+  for(int i = 0; i < NUM_DIR_LIGHTS; i++){
+    result += calDirLight(dirLight[i], norm, viewDir, objectColour);
+  }
 
   gl_FragColor = vec4(result, 1.0);
 }
 
 vec3 calDirLight(DirLight dirLight, vec3 norm, vec3 viewDir, vec3 objectColour){
-  vec3 lightDir = normalize(-vec3(u_view * vec4(dirLight.s_direction, 1.0)));
-
+  //vec3 lightDir = normalize(-vec3(u_view * vec4(dirLight.s_direction, 1.0)));
+  vec3 lightDir = normalize(dirLight.s_direction);
   // ambient
   vec3 ambient =  dirLight.s_ambient * objectColour;
 

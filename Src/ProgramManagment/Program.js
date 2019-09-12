@@ -37,7 +37,7 @@ class Program {
       if(index === -1) throw Error("Property " + name + " not found in vertexArray object");
 
       gl.enableVertexAttribArray(this.attributeLocations[name + "Loc"]);
-      
+
       //Check if combineBuffer was created
       if(vertexArray.getCombinedBuffer() === null){
         vertexBufferArray[index].getAttributeBuffer().bind();

@@ -19,12 +19,15 @@ function initialise(renderEngine) {
   perspectiveCamera.buildViewMatrixInverse();
 
   // Initialise light
-  let directionalLight = new DirectionalLight(new Vec3f(0.0, 0.0, 1.0), new Vec3f(1.0, 1.0, 1.0), 0.3, 0.8, 0.0);
+  let directionalLight1 = new DirectionalLight(new Vec3f(-1.0, 0.0, 0.0), new Vec3f(1.0, 1.0, 1.0), 0.3, 0.7, 0.0);
+  let directionalLight2 = new DirectionalLight(new Vec3f(0.0, 0.0, -1.0), new Vec3f(1.0, 1.0, 1.0), 0.0, 0.7, 0.0);
+
+  let directionalLights = [directionalLight1, directionalLight2];
 
   // Initialise model
   let model = renderEngine.getRenderModel(0);
   model.setPosition(new Vec3f(-10, 15, -160));
-  model.setRotation(new Vec3f(20, 45, 0));
+  model.setRotation(new Vec3f(0, 0, 0));
   model.setScale(new Vec3f(12, 12, 12));
   model.updateModelMatrix();
 
@@ -37,7 +40,7 @@ function initialise(renderEngine) {
   // Initialise ground
   let ground = renderEngine.getRenderModel(1);
   ground.setPosition(new Vec3f(0, 0, -145));
-  ground.setScale(new Vec3f(30, 30, 30));
+  ground.setScale(new Vec3f(35, 35, 35));
   ground.updateModelMatrix();
 
   // Texture for ground
@@ -63,11 +66,11 @@ function initialise(renderEngine) {
     then = now;
 
     // Every frame increase the rotation a little.
-    let rotation = model.getRotation();
+    /*let rotation = model.getRotation();
     rotation = rotation.getY();
     rotation -= 20.0 * deltaTime;
     model.setRotationY(rotation);
-    model.updateModelMatrix();
+    model.updateModelMatrix();*/
 
     for(let obj of objToRender){
       obj.clearUniforms();
@@ -91,7 +94,8 @@ function initialise(renderEngine) {
     let normalMatrixUniform = new UniformMatrix("u_normalMatrix", "4fv", normalMatrix);
     model.addUniform(normalMatrixUniform);
 
-    directionalLight.buildUniformObjectShader(model);
+    //directionalLight1.buildUniformObjectShader(model);
+    DirectionalLight.buildUniformObjectShader(model, directionalLights);
 
     // Ground uniforms
     let groundViewMatrixGround = Matrix44f.mulArray([ground.getModelMatrix(),
@@ -102,8 +106,9 @@ function initialise(renderEngine) {
     let normalMatrixGround = Matrix44f.transponse(Matrix44f.inverse(groundViewMatrixGround));
     let normalMatrixUniformGround = new UniformMatrix("u_normalMatrix", "4fv", normalMatrixGround);
     ground.addUniform(normalMatrixUniformGround);
+    //directionalLight1.buildUniformObjectShader(ground);
 
-    directionalLight.buildUniformObjectShader(ground);
+    DirectionalLight.buildUniformObjectShader(ground, directionalLights);
 
     // Global uniform
     let viewTransform = new UniformMatrix("u_view", "4fv", perspectiveCamera.getViewMatrixInverse());
