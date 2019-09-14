@@ -26,7 +26,7 @@ struct PointLight {
 #define NUM_DIR_LIGHTS 1/*dirLight*/
 uniform DirLight dirLight[NUM_DIR_LIGHTS];
 
-#define NUM_POINT_LIGHTS 1/*pointLight*/
+#define NUM_POINT_LIGHTS 2/*pointLight*/
 uniform PointLight pointLight[NUM_POINT_LIGHTS];
 
 uniform sampler2D u_sampler0;
@@ -93,9 +93,9 @@ vec3 calPointLight(PointLight pointLight, vec3 norm, vec3 viewDir, vec3 objectCo
   vec3 specular = pointLight.s_specular * spec * pointLight.s_lightColour * objectColour;
 
   //attenuation
-  float distance = length(lightDir);
-  float attenuation = 1.0;/* / (pointLight.s_constantFac + pointLight.s_linearFac * distance +
-                                  pointLight.s_quadraticFac * (distance * distance));*/
+  float distance = length(pointLight.s_position - v_fragPosition);
+  float attenuation = 1.0 / (pointLight.s_constantFac + pointLight.s_linearFac * distance +
+                                  pointLight.s_quadraticFac * (distance * distance));
 
   ambient *= attenuation;
   diffuse *= attenuation;

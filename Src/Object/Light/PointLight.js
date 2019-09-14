@@ -2,8 +2,6 @@ class PointLight extends Light {
   constructor(renderModel, colour, ambientIntensity, diffuseIntensity, specularIntensity, position, constantFac, linearFac, quadraticfac){
     super(renderModel, colour, ambientIntensity, diffuseIntensity, specularIntensity);
 
-
-
     this.setPosition(position);
 
     this.constantFac = constantFac;
@@ -12,10 +10,8 @@ class PointLight extends Light {
   }
 
   buildUniformObjectShader(object, camera) {
-    let modelViewMatrix = Matrix44f.mulArray([this.getModelMatrix(),
-                                      camera.getViewMatrixInverse()]);
-    let position = Matrix44f.mulVector(modelViewMatrix, this.position);
-    object.addUniform(new Uniform("pointLight.s_position", "3f", position.toArray()));
+    object.addUniform(new Uniform("pointLight.s_position", "3f", this.position.toArray()));
+    object.addUniform(new UniformMatrix("pointLight.s_modelViewTransform", "4fv", camera.getViewMatrixInverse()));
 
     object.addUniform(new Uniform("pointLight.s_lightColour", "3f", this.colour.toArray()));
 
@@ -30,11 +26,8 @@ class PointLight extends Light {
 
   static buildUniformObjectShader(object, pointLights, camera) {
     for(let i = 0; i < pointLights.length; i++){
-      let modelViewMatrix = Matrix44f.mulArray([pointLights[i].getModelMatrix(), camera.getViewMatrixInverse()]);
-      /*let position = Matrix44f.mulVector(modelViewMatrix, pointLights[i].getPosition());
-      object.addUniform(new Uniform("pointLight["+ i.toString() + "].s_position", "3f", position.toArray()));*/
       object.addUniform(new Uniform("pointLight["+ i.toString() + "].s_position", "3f", pointLights[i].getPosition().toArray()));
-      object.addUniform(new UniformMatrix("pointLight["+ i.toString() + "].s_modelViewTransform", "4fv", modelViewMatrix));
+      object.addUniform(new UniformMatrix("pointLight["+ i.toString() + "].s_modelViewTransform", "4fv", camera.getViewMatrixInverse()));
 
       object.addUniform(new Uniform("pointLight["+ i.toString() + "].s_lightColour", "3f", pointLights[i].getColour().toArray()));
 
