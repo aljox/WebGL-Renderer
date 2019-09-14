@@ -20,7 +20,7 @@ function initialise(renderEngine) {
   perspectiveCamera.buildViewMatrixInverse();
 
   // Initialise light
-  let cubeLight = new Light(renderEngine.getRenderModel(0), new Vec3f(1.0, 1.0, 1.0), 0.3, 0.8, 0.5);
+  let cubeLight = new Light(renderEngine.getRenderModel(0), new Vec3f(1.0, 1.0, 1.0), 0.2, 0.8, 0.5);
   cubeLight.setPosition(new Vec3f(10, 20, -120));
   cubeLight.setRotation(new Vec3f(0, 0, 0));
   cubeLight.setScale(new Vec3f(2, 2, 2));
@@ -28,7 +28,7 @@ function initialise(renderEngine) {
 
   // Initialise model
   let model = renderEngine.getRenderModel(1);
-  model.setPosition(new Vec3f(-10, 15, -160));
+  model.setPosition(new Vec3f(-10, 15, -150));
   model.setRotation(new Vec3f(20, 45, 0));
   model.setScale(new Vec3f(12, 12, 12));
   model.updateModelMatrix();

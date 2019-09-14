@@ -21,17 +21,20 @@ function initialise(renderEngine) {
   perspectiveCamera.buildViewMatrixInverse();
 
   // Initialise light
-  let directionalLight1 = new DirectionalLight(new Vec3f(0.3, -0.2, -1.0), new Vec3f(1.0, 1.0, 1.0), 0.0, 0.0, 0.0);
+  let directionalLight1 = new DirectionalLight(new Vec3f(0.1, 0.1, -1.0), new Vec3f(1.0, 1.0, 1.0), 0.0, 0.0, 0.0);
   let directionalLights = [directionalLight1];
 
-  let pointLight1 = new PointLight(renderEngine.getRenderModel(2), new Vec3f(1.0, 1.0, 1.0), 0.2, 1.0, 0.0,
-                                                                    new Vec3f(5, 15, -160), 1.0, 0.14, 0.07);
-  let pointLights = [pointLight1];
+  let pointLight1 = new PointLight(renderEngine.getRenderModel(2), new Vec3f(1.0, 1.0, 1.0), 0.2, 0.8, 0.5,
+                                                                    new Vec3f(5, 20, -120), 1.0, 0.0007, 0.00014);
+  let pointLight2 = new PointLight(renderEngine.getRenderModel(2), new Vec3f(1.0, 1.0, 1.0), 0.2, 0.8, 0.5,
+                                                                    new Vec3f(-15, 15, -190), 1.0, 0.0007, 0.00014);
+
+  let pointLights = [pointLight1, pointLight2];
 
   // Initialise model
   let model = renderEngine.getRenderModel(0);
   model.setPosition(new Vec3f(-10, 15, -160));
-  model.setRotation(new Vec3f(0, 0, 0));
+  model.setRotation(new Vec3f(10, 30, 0));
   model.setScale(new Vec3f(12, 12, 12));
   model.updateModelMatrix();
 
@@ -90,12 +93,14 @@ function initialise(renderEngine) {
 
   function setUniforms() {
     // Point Light uniforms
-    let modelViewMatrixLight = Matrix44f.mulArray([pointLights[0].getModelMatrix(),
-                                      perspectiveCamera.getViewMatrixInverse()]);
-    let modelViewTransoform = new UniformMatrix("u_modelViewTransform", "4fv", modelViewMatrixLight);
-    pointLights[0].addUniform(modelViewTransoform);
+    for(let i = 0; i < pointLights.length; i++){
+      let modelViewMatrixLight = Matrix44f.mulArray([pointLights[i].getModelMatrix(),
+                                        perspectiveCamera.getViewMatrixInverse()]);
+      let modelViewTransoform = new UniformMatrix("u_modelViewTransform", "4fv", modelViewMatrixLight);
+      pointLights[i].addUniform(modelViewTransoform);
 
-    pointLights[0].buildUniformLightShader();
+      pointLights[i].buildUniformLightShader();
+    }
 
     // Model uniforms
     let modelViewMatrixModel = Matrix44f.mulArray([model.getModelMatrix(),
