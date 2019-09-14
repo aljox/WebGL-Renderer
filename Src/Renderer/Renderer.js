@@ -20,13 +20,13 @@ class Renderer{
       uniformArray.clearPerObjectUniforms();
       this.updateCount(object.getVertexArray());
 
+      if(object.getModelMatrixUpdate()){object.updateModelMatrix();}
+
       let objectUniforms = object.getUniforms();
       uniformArray.addObjectUniformArray(objectUniforms);
 
       let objTexture = object.getTexture();
-      if(objTexture != null) {
-        objTexture.bindToTextureUnit();
-      }
+      if(objTexture != null) {objTexture.bindToTextureUnit();}
 
       let program = this.determineProgram(object.getType(), programs);
       gl.useProgram(program.getProgram());

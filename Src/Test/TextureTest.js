@@ -85,8 +85,8 @@ function initialise(renderEngine) {
     // Light model uniforms
     let modelViewMatrixLight = Matrix44f.mulArray([cubeLight.getModelMatrix(),
                                       perspectiveCamera.getViewMatrixInverse()]);
-    let modelViewTransoformL = new UniformMatrix("u_modelViewTransform", "4fv", modelViewMatrixLight);
-    cubeLight.addUniform(modelViewTransoformL);
+    let modelViewTransoform = new UniformMatrix("u_modelViewTransform", "4fv", modelViewMatrixLight);
+    cubeLight.addUniform(modelViewTransoform);
 
     cubeLight.buildUniformLightShader();
 

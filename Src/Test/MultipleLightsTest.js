@@ -1,7 +1,8 @@
 "use strict";
 
-let shaderList = ["MultipleLightsObject/TextureMultLightsObj.vertex", "MultipleLightsObject/TextureMultLightsObj.fragment"];
-let modelList = ["CubeModel.obj", "FlatGround.obj"];
+let shaderList = ["MultipleLightsObject/TextureMultLightsObj.vertex", "MultipleLightsObject/TextureMultLightsObj.fragment",
+                  "Light/BasicLight.vertex", "Light/BasicLight.fragment"];
+let modelList = ["CubeModel.obj", "FlatGround.obj", "cube.obj"];
 let textureList = ["trippyTexture.jpg", "brickWall.jpg"];
 
 function main() {
@@ -12,6 +13,7 @@ function main() {
 
 function initialise(renderEngine) {
   renderEngine.getProgram(0).setUse("Render_Model_Texture");
+  renderEngine.getProgram(1).setUse("Light");
 
   // Initialise camera
   let perspectiveCamera = new PerspectiveCamera(45, 1, 2000);
@@ -19,10 +21,12 @@ function initialise(renderEngine) {
   perspectiveCamera.buildViewMatrixInverse();
 
   // Initialise light
-  let directionalLight1 = new DirectionalLight(new Vec3f(-1.0, 0.0, 0.0), new Vec3f(1.0, 1.0, 1.0), 0.3, 0.7, 0.0);
-  let directionalLight2 = new DirectionalLight(new Vec3f(0.0, 0.0, -1.0), new Vec3f(1.0, 1.0, 1.0), 0.0, 0.7, 0.0);
+  let directionalLight1 = new DirectionalLight(new Vec3f(0.3, -0.2, -1.0), new Vec3f(1.0, 1.0, 1.0), 0.0, 0.0, 0.0);
+  let directionalLights = [directionalLight1];
 
-  let directionalLights = [directionalLight1, directionalLight2];
+  let pointLight1 = new PointLight(renderEngine.getRenderModel(2), new Vec3f(1.0, 1.0, 1.0), 0.2, 1.0, 0.0,
+                                                                    new Vec3f(5, 15, -160), 1.0, 0.14, 0.07);
+  let pointLights = [pointLight1];
 
   // Initialise model
   let model = renderEngine.getRenderModel(0);
@@ -55,6 +59,7 @@ function initialise(renderEngine) {
   // Renderer
   let renderer = new Renderer(1);
   let objToRender = [model, ground];
+  objToRender = objToRender.concat(pointLights);
 
   let then = 0;
   function renderScene(now) {
@@ -66,11 +71,11 @@ function initialise(renderEngine) {
     then = now;
 
     // Every frame increase the rotation a little.
-    /*let rotation = model.getRotation();
-    rotation = rotation.getY();
-    rotation -= 20.0 * deltaTime;
-    model.setRotationY(rotation);
-    model.updateModelMatrix();*/
+    // let rotation = model.getRotation();
+    // rotation = rotation.getY();
+    // rotation -= 20.0 * deltaTime;
+    // model.setRotationY(rotation);
+    // model.updateModelMatrix();
 
     for(let obj of objToRender){
       obj.clearUniforms();
@@ -84,6 +89,14 @@ function initialise(renderEngine) {
   requestAnimationFrame(renderScene);
 
   function setUniforms() {
+    // Point Light uniforms
+    let modelViewMatrixLight = Matrix44f.mulArray([pointLights[0].getModelMatrix(),
+                                      perspectiveCamera.getViewMatrixInverse()]);
+    let modelViewTransoform = new UniformMatrix("u_modelViewTransform", "4fv", modelViewMatrixLight);
+    pointLights[0].addUniform(modelViewTransoform);
+
+    pointLights[0].buildUniformLightShader();
+
     // Model uniforms
     let modelViewMatrixModel = Matrix44f.mulArray([model.getModelMatrix(),
                                       perspectiveCamera.getViewMatrixInverse()]);
@@ -94,8 +107,8 @@ function initialise(renderEngine) {
     let normalMatrixUniform = new UniformMatrix("u_normalMatrix", "4fv", normalMatrix);
     model.addUniform(normalMatrixUniform);
 
-    //directionalLight1.buildUniformObjectShader(model);
     DirectionalLight.buildUniformObjectShader(model, directionalLights);
+    PointLight.buildUniformObjectShader(model, pointLights, perspectiveCamera);
 
     // Ground uniforms
     let groundViewMatrixGround = Matrix44f.mulArray([ground.getModelMatrix(),
@@ -106,22 +119,14 @@ function initialise(renderEngine) {
     let normalMatrixGround = Matrix44f.transponse(Matrix44f.inverse(groundViewMatrixGround));
     let normalMatrixUniformGround = new UniformMatrix("u_normalMatrix", "4fv", normalMatrixGround);
     ground.addUniform(normalMatrixUniformGround);
-    //directionalLight1.buildUniformObjectShader(ground);
 
     DirectionalLight.buildUniformObjectShader(ground, directionalLights);
+    PointLight.buildUniformObjectShader(ground, pointLights, perspectiveCamera);
 
     // Global uniform
-    let viewTransform = new UniformMatrix("u_view", "4fv", perspectiveCamera.getViewMatrixInverse());
     let projectionTransform = new UniformMatrix("u_projection", "4fv", perspectiveCamera.getProjectionMatrix());
-    return new UniformArray([viewTransform, projectionTransform], []);
+    return new UniformArray([projectionTransform], []);
   }
-
-  /*function clearUniforms(){
-    perspectiveCamera.clearUniforms();
-    cubeLight.clearUniforms();
-    model.clearUniforms();
-    ground.clearUniforms();
-  }*/
 }
 
 main();

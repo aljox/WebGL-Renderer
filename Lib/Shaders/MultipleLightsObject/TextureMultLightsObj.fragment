@@ -9,17 +9,34 @@ struct DirLight {
     float s_specular/*dirLight[]*/;
 };
 
-#define NUM_DIR_LIGHTS 2/*dirLight*/
+struct PointLight {
+    vec3 s_lightColour/*pointLight[]*/;
+    vec3 s_position/*pointLight[]*/;
+    mat4 s_modelViewTransform/*pointLight[]*/;
+
+    float s_constantFac/*pointLight[]*/;
+    float s_linearFac/*pointLight[]*/;
+    float s_quadraticFac/*pointLight[]*/;
+
+    float s_ambient/*pointLight[]*/;
+    float s_diffuse/*pointLight[]*/;
+    float s_specular/*pointLight[]*/;
+};
+
+#define NUM_DIR_LIGHTS 1/*dirLight*/
 uniform DirLight dirLight[NUM_DIR_LIGHTS];
 
+#define NUM_POINT_LIGHTS 1/*pointLight*/
+uniform PointLight pointLight[NUM_POINT_LIGHTS];
+
 uniform sampler2D u_sampler0;
-uniform mat4 u_view;
 
 varying vec2 v_textureCord;
 varying vec3 v_normal;
 varying vec3 v_fragPosition;
 
 vec3 calDirLight(DirLight dirLight, vec3 norm, vec3 viewDir, vec3 objectColour);
+vec3 calPointLight(PointLight pointLight, vec3 norm, vec3 viewDir, vec3 objectColour);
 
 void main() {
   vec3 objectColour = vec3(texture2D(u_sampler0, v_textureCord));
@@ -32,12 +49,16 @@ void main() {
     result += calDirLight(dirLight[i], norm, viewDir, objectColour);
   }
 
+  for(int i = 0; i < NUM_POINT_LIGHTS; i++){
+    result += calPointLight(pointLight[i], norm, viewDir, objectColour);
+  }
+
   gl_FragColor = vec4(result, 1.0);
 }
 
 vec3 calDirLight(DirLight dirLight, vec3 norm, vec3 viewDir, vec3 objectColour){
-  //vec3 lightDir = normalize(-vec3(u_view * vec4(dirLight.s_direction, 1.0)));
-  vec3 lightDir = normalize(dirLight.s_direction);
+  vec3 lightDir = normalize(-dirLight.s_direction);
+
   // ambient
   vec3 ambient =  dirLight.s_ambient * objectColour;
 
@@ -50,6 +71,35 @@ vec3 calDirLight(DirLight dirLight, vec3 norm, vec3 viewDir, vec3 objectColour){
   float spec = max(dot(viewDir, reflectDir), 0.0);
   spec = pow(spec, 64.0);
   vec3 specular = dirLight.s_specular * spec * dirLight.s_lightColour * objectColour;
+
+  return ambient + diffuse + specular;
+}
+
+vec3 calPointLight(PointLight pointLight, vec3 norm, vec3 viewDir, vec3 objectColour) {
+  pointLight.s_position = vec3(pointLight.s_modelViewTransform * vec4(pointLight.s_position, 1.0));
+  vec3 lightDir = normalize(pointLight.s_position - v_fragPosition);
+
+  // ambient
+  vec3 ambient =  pointLight.s_ambient * objectColour;
+
+  // diffuse
+  float diff = max(dot(lightDir, norm), 0.0);
+  vec3 diffuse = pointLight.s_diffuse * diff * pointLight.s_lightColour * objectColour;
+
+  // specular
+  vec3 reflectDir = reflect(-lightDir, norm);
+  float spec = max(dot(viewDir, reflectDir), 0.0);
+  spec = pow(spec, 64.0);
+  vec3 specular = pointLight.s_specular * spec * pointLight.s_lightColour * objectColour;
+
+  //attenuation
+  float distance = length(lightDir);
+  float attenuation = 1.0;/* / (pointLight.s_constantFac + pointLight.s_linearFac * distance +
+                                  pointLight.s_quadraticFac * (distance * distance));*/
+
+  ambient *= attenuation;
+  diffuse *= attenuation;
+  specular *= attenuation;
 
   return ambient + diffuse + specular;
 }
