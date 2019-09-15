@@ -26,7 +26,7 @@ struct PointLight {
 #define NUM_DIR_LIGHTS 1/*dirLight*/
 uniform DirLight dirLight[NUM_DIR_LIGHTS];
 
-#define NUM_POINT_LIGHTS 2/*pointLight*/
+#define NUM_POINT_LIGHTS 9/*pointLight*/
 uniform PointLight pointLight[NUM_POINT_LIGHTS];
 
 uniform sampler2D u_sampler0;
