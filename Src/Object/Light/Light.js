@@ -31,4 +31,5 @@ class Light extends RenderModel{
   getDiffuseIntensity() {return this.diffuseIntensity;}
   getSpecularIntesinty() {return this.specularIntensity;}
   getAmbientIntensity() {return this.ambientIntensity;}
+  getNewInstance(){return new Light(this.vertexArray, this.colour, this.ambientIntensity, this.diffuseIntensity, this.specularIntensity);}
 }

@@ -48,4 +48,6 @@ class PointLight extends Light {
   getConstantFac() {return this.constantFac;}
   getLinearFac() {return this.linearFac;}
   getQuadraticFac() {return this.quadraticfac;}
+  getNewInstance(){return new PointLight(this.vertexArray, this.colour, this.ambientIntensity, this.diffuseIntensity, this.specularIntensity,
+                                          this.position, this.constantFac, this.linearFac, this.quadraticfac);}
 }

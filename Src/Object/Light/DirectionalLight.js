@@ -26,4 +26,5 @@ class DirectionalLight extends Light {
 
   setDir(dir) {this.dir = dir;}
   getDir() {return this.dir;}
+  getNewInstance(){return new DirectionalLight(this.dir, this.colour, this.ambientIntensity, this.diffuseIntensity, this.specularIntensity);}
 }

@@ -85,4 +85,5 @@ class RenderModel extends Object {
   getMaterial() {return this.material;}
   getTexture() {return this.texture;}
   getVertexArray(){return this.vertexArray;}
+  getNewInstance(){return new RenderModel(this.vertexArray);}
 }
