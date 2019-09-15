@@ -36,12 +36,12 @@ class KeyboardEvent {
 
           object.setPosition(position.addVec(direction));
           break;
-        case 'KeyU':
+        case 'KeyJ':
           position = object.getPosition();
           position.setY(position.getY() - stepY);
           object.setPosition(position);
           break;
-        case 'KeyJ':
+        case 'KeyU':
           position = object.getPosition();
           position.setY(position.getY() + stepY);
           object.setPosition(position);
