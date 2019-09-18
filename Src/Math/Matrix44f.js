@@ -109,12 +109,16 @@ class Matrix44f {
   static initOrtographich(left, right, bottom, top, near, far){
     let dX = right - left;
     let dY = top - bottom;
-    let dZ = far - near;
+    let dZ = near - far;
 
-    return new this([2 / dX, 0, 0, 0,
-                     0, 2 / dY, 0, 0,
-                     0, 0, -2 / dZ, 0,
-                     -(right + left) / dX, -(top + bottom) / dY, -(far + near) / dZ, 1]);
+    return new this([ 2 / (right - left), 0, 0, 0,
+      0, 2 / (top - bottom), 0, 0,
+      0, 0, 2 / (near - far), 0,
+
+      (left + right) / (left - right),
+      (bottom + top) / (bottom - top),
+      (near + far) / (near - far),
+      1]);
   }
 
   static initPerspective(fov, aspectRatio, zNear, zFar){
