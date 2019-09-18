@@ -28,7 +28,6 @@ function initialise(renderEngine) {
 
   // Texture for model
   let modelTexture = renderEngine.getTexture(0);
-  console.log(renderEngine.getTextureArray());
   modelTexture.generateMipMap("LINEAR_MIPMAP_LINEAR");
 
     // Initialise model
@@ -53,8 +52,21 @@ function initialise(renderEngine) {
   let objToRender = models.concat([ground]);
   objToRender = objToRender.concat(pointLights);
 
+  let then = 0;
+  function renderScene(now) {
+    // Animation precompute
+    now *= 0.001;
+    let deltaTime = now - then;
+    then = now;
 
-  function renderScene() {
+    for(let model of models){
+      let rotation = model.getRotation();
+      rotation = rotation.getY();
+      rotation -= 20.0 * deltaTime;
+      model.setRotationY(rotation);
+      model.updateModelMatrix();
+    }
+
     for(let obj of objToRender){
       obj.clearUniforms();
     }

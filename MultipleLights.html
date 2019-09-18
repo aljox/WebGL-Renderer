@@ -1,7 +1,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Input test</title>
+    <title>Multiple lights</title>
 
     <!-- Math -->
     <script src= "./Src/Math/Matrix44f.js"></script>
@@ -13,6 +13,7 @@
 
     <!-- Loading managment -->
     <script src= "./Src/Loaders/Loader.js"></script>
+    <script src= "./Src/Loaders/TextureLoader.js"></script>
     <script src= "./Src/Loaders/LoaderManager.js"></script>
 
     <!-- Buffer managment -->
@@ -33,8 +34,13 @@
     <script src= "./Src/Object/Object.js"></script>
     <script src= "./Src/Object/Model/RenderModel.js"></script>
 
+    <!-- Texture -->
+    <script src= "./Src/Texture/Texture.js"></script>
+
     <!-- Light -->
     <script src= "./Src/Object/Light/Light.js"></script>
+    <script src= "./Src/Object/Light/DirectionalLight.js"></script>
+    <script src= "./Src/Object/Light/PointLight.js"></script>
 
     <!-- Camera -->
     <script src= "./Src/Object/Camera/Camera.js"></script>
@@ -52,9 +58,9 @@
 
   </head>
   <body>
-    <canvas id= "canvas" width= "800" height= "800" class="canvas"></canvas>
+    <canvas id= "canvas" width= "1400" height= "800" class="canvas"></canvas>
 
     <!-- Test program -->
-    <script src= "./Src/Test/InputTest.js"></script>
+    <script src= "./Src/Test/MultipleLights.js"></script>
   </body>
 </html>
