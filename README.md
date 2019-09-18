@@ -17,6 +17,7 @@
 ## Setup
 1. Deploy local server
 2. Run MultipleLights.html file
+3. Move around with arrow keys
 
 ## Features
 * Multiple lights rendering
