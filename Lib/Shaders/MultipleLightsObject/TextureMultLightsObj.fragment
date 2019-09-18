@@ -89,7 +89,7 @@ vec3 calPointLight(PointLight pointLight, vec3 norm, vec3 viewDir, vec3 objectCo
   // specular
   vec3 reflectDir = reflect(-lightDir, norm);
   float spec = max(dot(viewDir, reflectDir), 0.0);
-  spec = pow(spec, 64.0);
+  spec = pow(spec, 256.0);
   vec3 specular = pointLight.s_specular * spec * pointLight.s_lightColour * objectColour;
 
   //attenuation
