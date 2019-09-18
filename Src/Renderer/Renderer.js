@@ -5,7 +5,7 @@ class Renderer{
   constructor(rendererID){
     this.rendererID = rendererID;
     this.count = 0;
-    this.clearColor = [0, 0, 0, 1];
+    this.clearColor = [0.0, 0.0, 0.0, 1.0];
   }
 
   render(canvas, programs, objects, uniformArray){
@@ -40,6 +40,50 @@ class Renderer{
       }
     }
   }
+
+  // TODO: Test!
+  // renderToFramebuffer(canvas, programs, objects, uniformArray, framebuffer) {
+  //   framebuffer.bind();
+  //   this.render(canvas, programs, objects, uniformArray);
+  // }
+
+
+  /*
+  renderDepthMap(texWidth, texHeight, programs, objects, uniformArray, framebuffer) {
+    //framebuffer.isComplete();
+    //framebuffer.bind();
+
+    gl.clearColor(0.0, 0.0, 1.0, 1.0);
+    this.clear();
+
+    gl.viewport(0, 0, texWidth, texHeight);
+
+    gl.enable(gl.CULL_FACE);
+    gl.enable(gl.DEPTH_TEST);
+
+    for(let object of objects){
+      uniformArray.clearPerObjectUniforms();
+      this.updateCount(object.getVertexArray());
+
+      if(object.getModelMatrixUpdate()){object.updateModelMatrix();}
+
+      let objectUniforms = object.getUniforms();
+      uniformArray.addObjectUniformArray(objectUniforms);
+
+      let program = this.determineProgram("Depth_Map", programs);
+      gl.useProgram(program.getProgram());
+      program.setProgramParameters(object.getVertexArray(), uniformArray);
+
+      if(object.getVertexArray().getIndexBuffer() === null){
+        gl.drawArrays(gl.TRIANGLES, 0, this.count);
+      } else {
+        object.getVertexArray().getIndexBuffer().bind();
+        gl.drawElements(gl.TRIANGLES, this.count, gl.UNSIGNED_SHORT, 0);
+      }
+    }
+  }
+
+  */
 
   determineProgram(type, programs){
     for(let program of programs){

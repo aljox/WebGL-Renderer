@@ -1,7 +1,6 @@
 // Only for simple 2D textures
 class Texture {
-  constructor(image) {
-    this.image = image;
+  constructor() {
     this.texture = gl.createTexture();
 
     this.filterMode = null;
@@ -9,8 +8,19 @@ class Texture {
     this.mipMap = false;
     this.textureUnit = 0;
 
+    this.image = null;
+  }
+
+  applyImage(image) {
+    this.image = image;
     this.bind();
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, this.image);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+  }
+
+  createDepthTexture(width, height){
+    this.bind();
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH_COMPONENT,
+      width, height, 0, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, null);
   }
 
   bind() {

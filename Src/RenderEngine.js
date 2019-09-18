@@ -44,6 +44,11 @@ class RenderEngine {
     if(!gl){
       throw Error("Browser might not support WebGl");
     }
+
+    const ext = gl.getExtension('WEBGL_depth_texture');
+      if (!ext) {
+        throw error('need WEBGL_depth_texture');
+      }
   }
 
   /*
@@ -85,7 +90,10 @@ class RenderEngine {
 
   static setTextures(renderEngine, loadTextureList){
     for(let loadObj of loadTextureList){
-      renderEngine.textures.push(new Texture(loadObj.getImage()));
+      let texture = new Texture();
+      texture.applyImage(loadObj.getImage());
+      renderEngine.textures.push(texture);
+      //renderEngine.textures.push(new ImageTexture(loadObj.getImage()));
     }
 
     renderEngine.textureSetted = true;
