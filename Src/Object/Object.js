@@ -95,22 +95,22 @@ class Object {
   }
 
   setScaleX(scaleX){
-    if(scaleX != this.scaleX){
-      this.scaleX = scaleX;
+    if(scaleX != this.scale.getX()){
+      this.scale.getX() = scaleX;
       this.modelMatrixUpdate = true;
     }
   }
 
   setScaleY(scaleY){
-    if(scaleY != this.scaleY){
-      this.scaleY = scaleY;
+    if(scaleY != this.scale.getY()){
+      this.scale.getY() = scaleY;
       this.modelMatrixUpdate = true;
     }
   }
 
   setScaleX(scaleZ){
-    if(scaleZ != this.scaleZ){
-      this.scaleZ = scaleZ;
+    if(scaleZ != this.scale.getZ()){
+      this.scale.getZ() = scaleZ;
       this.modelMatrixUpdate = true;
     }
   }
@@ -130,6 +130,7 @@ class Object {
     let rotation = Matrix44f.initRotation(MathExt.degreeToRadians(this.rotation.getX()),
                                           MathExt.degreeToRadians(this.rotation.getY()),
                                           MathExt.degreeToRadians(this.rotation.getZ()));
+
 
     let scale = Matrix44f.initScale(this.scale.getX(), this.scale.getY(), this.scale.getZ());
 
