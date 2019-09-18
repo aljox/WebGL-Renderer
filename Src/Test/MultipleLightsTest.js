@@ -21,13 +21,14 @@ function initialise(renderEngine) {
   perspectiveCamera.buildViewMatrixInverse();
 
   // Initialise light
-  let directionalLight1 = new DirectionalLight(new Vec3f(0.1, 0.1, -1.0), new Vec3f(1.0, 1.0, 1.0), 0.0, 0.0, 0.0);
+  let directionalLight1 = new DirectionalLight(new Vec3f(0.1, 0.1, -1.0), new Vec3f(1.0, 1.0, 1.0), 0.1, 0.2, 0.3);
   let directionalLights = [directionalLight1];
 
   let pointLights = generatePointLights(renderEngine.getRenderModel(2), 9);
 
   // Texture for model
   let modelTexture = renderEngine.getTexture(0);
+  console.log(renderEngine.getTextureArray());
   modelTexture.generateMipMap("LINEAR_MIPMAP_LINEAR");
 
     // Initialise model
@@ -132,7 +133,7 @@ function initialise(renderEngine) {
     for(let i = 0; i < num; i++){
       let pointLight = new PointLight(renderModel, new Vec3f(1.0, 1.0, 1.0), 0.2, 1.0, 1.0,
                                         new Vec3f(MathExt.randomInteger(-30, 30), MathExt.randomInteger(3, 30), MathExt.randomInteger(-200, -100)),
-                                          1.0, 0.07, 0.014);
+                                          1.0, 0.01, 0.002);
 
       pointLights[i] = pointLight;
     }
