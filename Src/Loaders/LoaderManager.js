@@ -86,12 +86,13 @@ class LoaderManager {
   //Check if all files from loadObject have been loaded
   checkLoad(){
     let loadObjects = this.loadShaderObj.concat(this.loadModelObj.concat(this.loadTextureObj));
-    
+
     for(let loadObj of loadObjects){
       if(loadObj.getLoaded() === false){
         return false;
       }
     }
+    
     return true;
   }
 
@@ -103,7 +104,7 @@ class LoaderManager {
     } else {
       setTimeout(function() {
           this.waitLoad(callback);
-        }.bind(this), 50);
+        }.bind(this), 100);
     }
   }
 
