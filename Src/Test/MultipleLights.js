@@ -1,9 +1,9 @@
 "use strict";
 
-let shaderList = ["MultipleLightsObject/TextureMultLightsObj.vertex", "MultipleLightsObject/TextureMultLightsObj.fragment",
-                  "Light/BasicLight.vertex", "Light/BasicLight.fragment"];
-let modelList = ["CubeModel.obj", "FlatGround.obj", "cube.obj"];
-let textureList = ["trippyTexture.jpg", "brickWall.jpg"];
+let shaderList = ["./MultipleLightsObject/TextureMultLightsObj.vertex", "./MultipleLightsObject/TextureMultLightsObj.fragment",
+                  "./Light/BasicLight.vertex", "./Light/BasicLight.fragment"];
+let modelList = ["./CubeModel.obj", "./FlatGround.obj", "./cube.obj"];
+let textureList = ["./trippyTexture.jpg", "./brickWall.jpg"];
 
 function main() {
   let renderEngine = new RenderEngine(shaderList, modelList, textureList);
