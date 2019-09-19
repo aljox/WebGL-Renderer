@@ -14,7 +14,7 @@ class Texture {
   applyImage(image) {
     this.image = image;
     this.bind();
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, this.image);
   }
 
   createDepthTexture(width, height){
