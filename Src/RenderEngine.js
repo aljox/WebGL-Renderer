@@ -93,7 +93,6 @@ class RenderEngine {
       let texture = new Texture();
       texture.applyImage(loadObj.getImage());
       renderEngine.textures.push(texture);
-      //renderEngine.textures.push(new ImageTexture(loadObj.getImage()));
     }
 
     renderEngine.textureSetted = true;
@@ -107,7 +106,7 @@ class RenderEngine {
     } else {
       setTimeout(function() {
           this.waitToSetData(callback);
-        }.bind(this), 50);
+        }.bind(this), 10);
     }
   }
 
